@@ -20,13 +20,13 @@ goog.require('lime.parser.TMX');
 goog.require('lpc.levels.Level');
 
 lpc.start = function(){
-	var director = new lime.Director(document.body, lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
+	var director = new lime.Director(document.getElementById('game'), lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
 	    game = new lime.Scene(),
 	    charLayer = new lpc.Layer().setPosition(0,0),
 		player = new lpc.Player().setPosition(director.getSize().width/2,director.getSize().height/2);
 		levelAnimating = false,
 		blockedWay = '',
-		moveDuration = .2,
+		moveDuration = .15,
 		movingDistance = 0,
 		moveDirection = '',
 		charDirection = '';
@@ -35,6 +35,8 @@ lpc.start = function(){
 	var input = new lpc.inputs.KeyboardInput();
 	
 	level.getCharLayer().appendChild(player);
+	
+	//level.toggleGrid();
 	
 	game.setChildIndex(charLayer, 1);
 
@@ -53,7 +55,7 @@ lpc.start = function(){
 			player.move(e.input);
 			
 			if(!levelAnimating){
-				lime.scheduleManager.callAfter(moveLevel, this, 2); //um pequeno intervalo antes de se mover, para calcular colisões corretamente
+				lime.scheduleManager.callAfter(moveLevel, this, 100); //um pequeno intervalo antes de se mover, para calcular colisões corretamente
 			}	
 				
 		}else if(e.input == ''){

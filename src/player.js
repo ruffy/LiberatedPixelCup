@@ -1,26 +1,22 @@
-/*
- * 
- * TODO: mudar sprite sheet
- */
-
 goog.provide('lpc.Player');
 
 goog.require('lime.SpriteSheet');
-goog.require('lime.Sprite');
+goog.require('lpc.Sprite');
 goog.require('lime.animation.KeyframeAnimation');
 goog.require('lime.parser.JSON');
 goog.require('lime.ASSETS.soldier.json');
-goog.require('bikemessenger.Config');
+goog.require('lpc.Config');
 
 lpc.Player = function(){
 	goog.base(this);
 	
 	var moving = false;
 	var direction = '';
+	var delay = .07;
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/soldier.png', lime.ASSETS.soldier.json, lime.parser.JSON);
 	
-	this.setSize(bikemessenger.Config.GRID_CELL,bikemessenger.Config.GRID_CELL).setFill(this.sheet.getFrame('soldier0018.png'));
+	this.setAnchorPoint(.5, 1).setSizeOnGrid(2, 2).setFill(this.sheet.getFrame('soldier0018.png'));
 	
 	this.up = new Array( 
 		this.sheet.getFrame('soldier0000.png'),
@@ -67,16 +63,16 @@ lpc.Player = function(){
 		this.sheet.getFrame('soldier0017.png')
 	);
 	
-	this.animationUp = new lime.animation.KeyframeAnimation().setDelay(.10);
+	this.animationUp = new lime.animation.KeyframeAnimation().setDelay(delay);
 	this.animationUp.setFrames(this.up);
 	
-	this.animationDown = new lime.animation.KeyframeAnimation().setDelay(.10);
+	this.animationDown = new lime.animation.KeyframeAnimation().setDelay(delay);
 	this.animationDown.setFrames(this.down);
 	
-	this.animationRight = new lime.animation.KeyframeAnimation().setDelay(.10);
+	this.animationRight = new lime.animation.KeyframeAnimation().setDelay(delay);
 	this.animationRight.setFrames(this.right);
 	
-	this.animationLeft = new lime.animation.KeyframeAnimation().setDelay(.10);
+	this.animationLeft = new lime.animation.KeyframeAnimation().setDelay(delay);
 	this.animationLeft.setFrames(this.left);
 	
 	this.setMoving = function(value){moving = value; return this}
@@ -85,7 +81,7 @@ lpc.Player = function(){
 	this.getDirection = function(){return direction}
 }
 
-goog.inherits(lpc.Player, lime.Sprite);
+goog.inherits(lpc.Player, lpc.Sprite);
 
 lpc.Player.prototype.move = function(direction){
 	if(this.getDirection() != direction){

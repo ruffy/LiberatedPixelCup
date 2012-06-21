@@ -19,8 +19,16 @@ lpc.levels.Level = function(game, tmx){
 		game.appendChild(layer);
 		
 		for(var p in map.layers[i].properties){
-			if(map.layers[i].properties[p].name == 'player'){
+			switch(map.layers[i].properties[p].name){
+				case 'player':
 				this.charLayer_ = layer;
+				break;
+				
+				case 'renderer':
+				if(map.layers[i].properties[p].value == 'canvas'){
+					layer.setRenderer(lime.Renderer.CANVAS);
+				}
+				break;
 			}
 		}
 		
@@ -38,6 +46,8 @@ lpc.levels.Level = function(game, tmx){
 					tile.pass = Boolean(map.layers[i].tiles[c].tile.properties[t].value);
 				}
 			}
+			
+			layer.setRenderer(lime.Renderer.CANVAS);
 			
 			
 			layer.appendChild(tile);

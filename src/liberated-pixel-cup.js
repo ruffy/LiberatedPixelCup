@@ -23,7 +23,7 @@ lpc.start = function(){
 	var director = new lime.Director(document.getElementById('game'), lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
 	    game = new lime.Scene(),
 	    charLayer = new lpc.Layer().setPosition(0,0),
-		player = new lpc.Player().setPositionOnGrid(24,1);
+		player = new lpc.Player().setPositionOnGrid(10,10);
 		levelAnimating = false,
 		blockedWay = '',
 		moveDuration = .2,
@@ -36,7 +36,7 @@ lpc.start = function(){
 	
 	level.getCharLayer().appendChild(player);
 	
-	level.toggleGrid();
+	//level.toggleGrid();
 	
 	game.setChildIndex(charLayer, 1);
 

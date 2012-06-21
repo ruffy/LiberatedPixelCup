@@ -11,7 +11,7 @@ lpc.Layer = function(){
 
 goog.inherits(lpc.Layer, lime.Layer);
 
-lpc.Sprite.prototype.getPositionOnGrid = function(){
+lpc.Node.prototype.getPositionOnGrid = function(){
 	var position = new goog.math.Coordinate(this.getPosition().x, this.getPosition().y);
 	position.x = position.x/lpc.Config.GRID_CELL;
 	position.y = position.y/lpc.Config.GRID_CELL;

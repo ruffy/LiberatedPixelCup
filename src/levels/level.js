@@ -131,15 +131,19 @@ lpc.levels.Level.prototype.tileIsPassable = function(value, opt_y){
         y = value.y;
     }
     
+    var pass = true;
+    
     for(var i in this.map_.layers){
     	for(var t in this.map_.layers[i].tiles){
     		if(this.map_.layers[i].tiles[t].x == x && this.map_.layers[i].tiles[t].y == y){
     			if(this.map_.layers[i].tiles[t].tile.properties.pass == 'false'){
-    				return false;
+    				pass = false;
+    			}else if(this.map_.layers[i].tiles[t].tile.properties.pass == 'true'){
+    				pass = true;
     			}
     		}
     	}
     }
     
-    return true;
+    return pass;
 }

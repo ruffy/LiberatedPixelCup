@@ -31,7 +31,7 @@ lpc.start = function(){
 		moveDirection = '',
 		charDirection = '';
 	
-	var level = new lpc.levels.Level(game, 'assets/maps/test/test.tmx');
+	var level = new lpc.levels.Level(game, 'assets/maps/test/farm.tmx');
 	var input = new lpc.inputs.KeyboardInput();
 	
 	level.getCharLayer().appendChild(player);

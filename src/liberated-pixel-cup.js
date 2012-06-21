@@ -23,7 +23,7 @@ lpc.start = function(){
 	var director = new lime.Director(document.getElementById('game'), lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
 	    game = new lime.Scene(),
 	    charLayer = new lpc.Layer().setPosition(0,0),
-		player = new lpc.Player().setPosition(director.getSize().width/2,director.getSize().height/2);
+		player = new lpc.Player().setPositionOnGrid(24,1);
 		levelAnimating = false,
 		blockedWay = '',
 		moveDuration = .2,
@@ -36,7 +36,7 @@ lpc.start = function(){
 	
 	level.getCharLayer().appendChild(player);
 	
-	//level.toggleGrid();
+	level.toggleGrid();
 	
 	game.setChildIndex(charLayer, 1);
 
@@ -72,7 +72,7 @@ lpc.start = function(){
 	function moveLevel(){
 		if(moveDirection != '' && !levelAnimating){
             levelAnimating = true;
-            var move;
+            var move = null;
             var wait = false;
             
             if(moveDirection != charDirection){
@@ -83,56 +83,54 @@ lpc.start = function(){
             
             player.move(moveDirection);
             
-            if(moveDirection != blockedWay){
-                switch(moveDirection){
-                    case 'up':
-                    move = new lime.animation.MoveBy(0, -lpc.Config.GRID_CELL);
-                    break;
-                    
-                    case 'down':
-                    move = new lime.animation.MoveBy(0, lpc.Config.GRID_CELL);
-                    break;
-                    
-                    case 'right':
-                    move = new lime.animation.MoveBy(lpc.Config.GRID_CELL, 0);
-                    break; 
-                    
-                    case 'left':
-                    move = new lime.animation.MoveBy(-lpc.Config.GRID_CELL, 0);
-                    break;
-                }
-                    
-                move.setDuration(moveDuration).setEasing(lime.animation.Easing.LINEAR);
-        
-                goog.events.listen(move, lime.animation.Event.STOP, function(){
-                    //level.roundPosition();
-                    
-                    blockedWay = '';
-                    levelAnimating = false;
-                    lime.scheduleManager.callAfter(moveLevel, this, 2); //pequeno intervalo antes de mover
-                    movingDistance++;
-                });
+            var posi = player.getPositionOnGrid();
+            
+            switch(moveDirection){
+                case 'up':
+                if(level.tileIsPassable(posi.x, posi.y - 1))
+                	move = new lime.animation.MoveBy(0, -lpc.Config.GRID_CELL);
+                break;
                 
-                /*var layers = level.getLayers();
+                case 'down':
+                if(level.tileIsPassable(posi.x, posi.y + 1))
+                	move = new lime.animation.MoveBy(0, lpc.Config.GRID_CELL);
+                break;
                 
-                for(var i in layers){
-                	move.addTarget(layers[i]);
-                }*/
-				move.addTarget(player);
+                case 'right':
+                if(level.tileIsPassable(posi.x + 1, posi.y))
+                	move = new lime.animation.MoveBy(lpc.Config.GRID_CELL, 0);
+                break; 
                 
-                if(wait){
-                    lime.scheduleManager.callAfter(function(){
-                        move.play();
-                    }, this, 35);// timming que controla o intervalo entre o personagem se virar e o mapa começar a mover
-                }else{
-                    move.play();
-                }
-            }else{
-                blockedWay = '';
-                levelAnimating = false;
-                movingDistance = 0;
+                case 'left':
+                if(level.tileIsPassable(posi.x - 1, posi.y))
+                	move = new lime.animation.MoveBy(-lpc.Config.GRID_CELL, 0);
+                break;
             }
             
+            if(move){
+	            move.setDuration(moveDuration).setEasing(lime.animation.Easing.LINEAR);
+	    
+	            goog.events.listen(move, lime.animation.Event.STOP, function(){
+	                //level.roundPosition();
+	                
+	                blockedWay = '';
+	                levelAnimating = false;
+	                lime.scheduleManager.callAfter(moveLevel, this, 2); //pequeno intervalo antes de mover
+	                movingDistance++;
+	            });
+	            
+	            move.addTarget(player);
+	                
+	            if(wait){
+	                lime.scheduleManager.callAfter(function(){
+	                    move.play();
+	                }, this, 35);// timming que controla o intervalo entre o personagem se virar e o mapa começar a mover
+	            }else{
+	                move.play();
+	            }
+            }else{
+            	levelAnimating = false;
+            }
 	    }
     }
 }

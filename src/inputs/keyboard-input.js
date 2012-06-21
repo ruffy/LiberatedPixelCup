@@ -62,12 +62,10 @@ lpc.inputs.KeyboardInput = function(){
 					if(typeof lastKey != 'undefined'){
 						if(lastKey.isPressed()){
 							currentKeyCode = lastKey.getCode();
-							
-							if(!braked){
-								var ie = new lpc.events.InputEvent(lpc.events.InputEvent.FIRE);
-								ie.input = lastKey.getName();
-								self.dispatchEvent(ie);
-							}
+
+							var ie = new lpc.events.InputEvent(lpc.events.InputEvent.FIRE);
+							ie.input = lastKey.getName();
+							self.dispatchEvent(ie);
 							
 							break;
 						}

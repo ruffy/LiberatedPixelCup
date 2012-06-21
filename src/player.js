@@ -16,7 +16,7 @@ lpc.Player = function(){
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/soldier.png', lime.ASSETS.soldier.json, lime.parser.JSON);
 	
-	this.setAnchorPoint(.5, 1).setSizeOnGrid(2, 2).setFill(this.sheet.getFrame('soldier0018.png'));
+	this.setAnchorPoint(.25, .5).setSizeOnGrid(2, 2).setFill(this.sheet.getFrame('soldier0018.png'));
 	
 	this.up = new Array( 
 		this.sheet.getFrame('soldier0000.png'),

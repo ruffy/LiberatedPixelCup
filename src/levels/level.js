@@ -9,23 +9,21 @@ lpc.levels.Level = function(game, tmx){
 	var grid_visible = false;
 	var grid = new lpc.Sprite();
 	
-	var map = new lime.parser.TMX(tmx);
+	this.map_ = new lime.parser.TMX(tmx);
 	
-	console.log(map)
-	
-	for(var i in map.layers){
+	for(var i in this.map_.layers){
 		var layer = new lpc.Layer();
 		
 		game.appendChild(layer);
 		
-		for(var p in map.layers[i].properties){
-			switch(map.layers[i].properties[p].name){
+		for(var p in this.map_.layers[i].properties){
+			switch(this.map_.layers[i].properties[p].name){
 				case 'player':
 				this.charLayer_ = layer;
 				break;
 				
 				case 'renderer':
-				if(map.layers[i].properties[p].value == 'canvas'){
+				if(this.map_.layers[i].properties[p].value == 'canvas'){
 					layer.setRenderer(lime.Renderer.CANVAS);
 				}
 				break;
@@ -36,14 +34,14 @@ lpc.levels.Level = function(game, tmx){
 			this.layers_.push(layer);
 		}
 		
-		for(var c in map.layers[i].tiles){
+		for(var c in this.map_.layers[i].tiles){
 			var tile = new lpc.Sprite().setAnchorPoint(0, 0).setSizeOnGrid(1, 1);
-			tile.setPositionOnGrid(map.layers[i].tiles[c].x, map.layers[i].tiles[c].y);
-			tile.setFill(map.layers[i].tiles[c].tile.frame);
+			tile.setPositionOnGrid(this.map_.layers[i].tiles[c].x, this.map_.layers[i].tiles[c].y);
+			tile.setFill(this.map_.layers[i].tiles[c].tile.frame);
 			
-			for(var t in map.layers[i].tiles[c].tile.properties){
-				if(map.layers[i].tiles[c].tile.properties[t].name == 'pass'){
-					tile.pass = Boolean(map.layers[i].tiles[c].tile.properties[t].value);
+			for(var t in this.map_.layers[i].tiles[c].tile.properties){
+				if(this.map_.layers[i].tiles[c].tile.properties[t].name == 'pass'){
+					tile.pass = Boolean(this.map_.layers[i].tiles[c].tile.properties[t].value);
 				}
 			}
 			
@@ -113,4 +111,32 @@ lpc.levels.Level.prototype.toggleGrid = function(){
 
 lpc.levels.Level.prototype.getCharLayer = function(){
 	return this.charLayer_;
+}
+
+lpc.levels.Level.prototype.tileIsPassable = function(value, opt_y){
+	var x,
+		y;
+	
+	if (arguments.length == 2) {
+        x = arguments[0];
+        y = arguments[1];
+    }
+    else {
+        x = value.x;
+        y = value.y;
+    }
+    
+    for(var i in this.map_.layers){
+    	for(var t in this.map_.layers[i].tiles){
+    		if(this.map_.layers[i].tiles[t].x == x && this.map_.layers[i].tiles[t].y == y){
+    			for(var p in this.map_.layers[i].tiles[t].tile.properties){
+    				if(this.map_.layers[i].tiles[t].tile.properties[p].name == 'pass' && this.map_.layers[i].tiles[t].tile.properties[p].value == 'false'){
+    					return false
+    				}
+    			}
+    		}
+    	}
+    }
+    
+    return true;
 }

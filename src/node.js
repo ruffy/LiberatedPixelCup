@@ -35,8 +35,8 @@ lpc.Node.prototype.setSizeOnGrid = function(value, opt_height){
 	return this.setSize(width, height);
 }
 
-lpc.Node.prototype.getSizeOnGrid = function(){
-	var size = this.getSize();
+lpc.Sprite.prototype.getSizeOnGrid = function(){
+	var size = new goog.math.Size(this.getSize().width, this.getSize().height);
 	size.width = size.width/lpc.Config.GRID_CELL;
 	size.height = size.height/lpc.Config.GRID_CELL;
 	
@@ -51,8 +51,8 @@ lpc.Node.prototype.getSizeOnGrid = function(){
 	return new goog.math.Size(width, height);
 }
 
-lpc.Node.prototype.getPositionOnGrid = function(){
-	var position = this.getPosition();
+lpc.Sprite.prototype.getPositionOnGrid = function(){
+	var position = new goog.math.Coordinate(this.getPosition().x, this.getPosition().y);
 	position.x = position.x/lpc.Config.GRID_CELL;
 	position.y = position.y/lpc.Config.GRID_CELL;
 	

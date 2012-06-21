@@ -2,6 +2,11 @@
 <map version="1.0" orientation="orthogonal" width="25" height="20" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="grass" tilewidth="32" tileheight="32">
   <image source="tilesets/grass.png" trans="ffffff" width="96" height="192"/>
+  <tile id="10">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="19" name="dirt" tilewidth="32" tileheight="32">
   <image source="tilesets/dirt.png" trans="ffffff" width="96" height="192"/>
@@ -11,9 +16,29 @@
  </tileset>
  <tileset firstgid="79" name="trunk" tilewidth="32" tileheight="32">
   <image source="tilesets/trunk.png" trans="ffffff" width="192" height="96"/>
+  <tile id="7">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="97" name="water" tilewidth="32" tileheight="32">
   <image source="tilesets/water.png" trans="ffffff" width="96" height="192"/>
+  <tile id="10">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="115" name="watergrass" tilewidth="32" tileheight="32">
   <image source="tilesets/watergrass.png" trans="ffffff" width="96" height="192"/>

@@ -141,3 +141,23 @@ lpc.Player.prototype.stop = function(){
 	
 	this.setMoving(false);
 }
+
+lpc.Player.prototype.turn = function(side){
+	switch(side){
+		case 'up':
+		this.setFill(this.sheet.getFrame('soldier0000.png'));
+		break;
+		
+		case 'down':
+		this.setFill(this.sheet.getFrame('soldier0018.png'));
+		break;
+		
+		case 'right':
+		this.setFill(this.sheet.getFrame('soldier0027.png'));
+		break;
+		
+		case 'left':
+		this.setFill(this.sheet.getFrame('soldier0009.png'));
+		break;
+	}
+}

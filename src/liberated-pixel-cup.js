@@ -52,14 +52,16 @@ lpc.start = function(){
 			e.input == 'right' ||
 			e.input == 'left'){
 			
-			player.move(e.input);
+			player.turn(e.input);
 			
 			if(!levelAnimating){
-				lime.scheduleManager.callAfter(moveLevel, this, 100); //um pequeno intervalo antes de se mover, para calcular colisões corretamente
+				lime.scheduleManager.callAfter(moveLevel, this, 100);
 			}	
 				
 		}else if(e.input == ''){
-			player.stop();
+			lime.scheduleManager.callAfter(function(){
+				player.stop();
+			}, this, 150);
 		}
 	});
 	

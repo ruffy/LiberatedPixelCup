@@ -12,7 +12,7 @@ lpc.Player = function(){
 	
 	var moving = false;
 	var direction = '';
-	var delay = .07;
+	var delay = .06;
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/soldier.png', lime.ASSETS.soldier.json, lime.parser.JSON);
 	

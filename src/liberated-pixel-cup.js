@@ -26,7 +26,7 @@ lpc.start = function(){
 		player = new lpc.Player().setPosition(director.getSize().width/2,director.getSize().height/2);
 		levelAnimating = false,
 		blockedWay = '',
-		moveDuration = .15,
+		moveDuration = .2,
 		movingDistance = 0,
 		moveDirection = '',
 		charDirection = '';
@@ -84,30 +84,26 @@ lpc.start = function(){
             if(moveDirection != blockedWay){
                 switch(moveDirection){
                     case 'up':
-                    value = lpc.Config.GRID_CELL + Math.abs(level.getPosition().y % lpc.Config.GRID_CELL);
-                    move = new lime.animation.MoveTo(level.getPosition().x, level.getPosition().y + value);
+                    move = new lime.animation.MoveBy(0, -lpc.Config.GRID_CELL);
                     break;
                     
                     case 'down':
-                    value = (-1 * lpc.Config.GRID_CELL) + Math.abs(level.getPosition().y % lpc.Config.GRID_CELL);
-                    move = new lime.animation.MoveTo(level.getPosition().x, level.getPosition().y + value);
+                    move = new lime.animation.MoveBy(0, lpc.Config.GRID_CELL);
                     break;
                     
                     case 'right':
-                    value = (-1 * lpc.Config.GRID_CELL) + Math.abs(level.getPosition().x % lpc.Config.GRID_CELL);
-                    move = new lime.animation.MoveTo(level.getPosition().x + value, level.getPosition().y);
-                    break;
+                    move = new lime.animation.MoveBy(lpc.Config.GRID_CELL, 0);
+                    break; 
                     
                     case 'left':
-                    value = lpc.Config.GRID_CELL + Math.abs(level.getPosition().x % lpc.Config.GRID_CELL);
-                    move = new lime.animation.MoveTo(level.getPosition().x + value, level.getPosition().y);
+                    move = new lime.animation.MoveBy(-lpc.Config.GRID_CELL, 0);
                     break;
                 }
                     
                 move.setDuration(moveDuration).setEasing(lime.animation.Easing.LINEAR);
         
                 goog.events.listen(move, lime.animation.Event.STOP, function(){
-                    level.roundPosition();
+                    //level.roundPosition();
                     
                     blockedWay = '';
                     levelAnimating = false;
@@ -115,11 +111,12 @@ lpc.start = function(){
                     movingDistance++;
                 });
                 
-                var layers = level.getLayers();
+                /*var layers = level.getLayers();
                 
                 for(var i in layers){
                 	move.addTarget(layers[i]);
-                }
+                }*/
+				move.addTarget(player);
                 
                 if(wait){
                     lime.scheduleManager.callAfter(function(){

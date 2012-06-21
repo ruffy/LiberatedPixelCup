@@ -1,6 +1,7 @@
 goog.provide('lpc.levels.Level');
 
 goog.require('lpc.Layer');
+goog.require('lpc.utils.TMXParser')
 
 lpc.levels.Level = function(game, tmx){
 	this.layers_ = new Array();
@@ -9,14 +10,16 @@ lpc.levels.Level = function(game, tmx){
 	var grid_visible = false;
 	var grid = new lpc.Sprite();
 	
-	this.map_ = new lime.parser.TMX(tmx);
+	this.map_ = new lpc.utils.TMXParser(tmx);
+	
+	console.log(this.map_);
 	
 	for(var i in this.map_.layers){
 		var layer = new lpc.Layer();
 		
 		game.appendChild(layer);
 		
-		for(var p in this.map_.layers[i].properties){
+		/*for(var p in this.map_.layers[i].properties){
 			switch(this.map_.layers[i].properties[p].name){
 				case 'player':
 				this.charLayer_ = layer;
@@ -28,25 +31,27 @@ lpc.levels.Level = function(game, tmx){
 				}
 				break;
 			}
-		}
+		}*/
 		
-		if(layer != this.charLayer_){
+		console.log(this.map_.layers[i].properties['player']);
+		if(this.map_.layers[i].properties.player == 'true'){
+			this.charLayer_ = layer;
+		}else{
 			this.layers_.push(layer);
 		}
+		
+		if(this.map_.layers[i].properties.renderer == 'canvas'){
+			layer.setRenderer(lime.Renderer.CANVAS);
+		}
+		
+		layer.setRenderer(lime.Renderer.CANVAS); //a performance em canvas é muito melhor no firefox (navegador que será usado pelos jurados)
 		
 		for(var c in this.map_.layers[i].tiles){
 			var tile = new lpc.Sprite().setAnchorPoint(0, 0).setSizeOnGrid(1, 1);
 			tile.setPositionOnGrid(this.map_.layers[i].tiles[c].x, this.map_.layers[i].tiles[c].y);
 			tile.setFill(this.map_.layers[i].tiles[c].tile.frame);
 			
-			for(var t in this.map_.layers[i].tiles[c].tile.properties){
-				if(this.map_.layers[i].tiles[c].tile.properties[t].name == 'pass'){
-					tile.pass = Boolean(this.map_.layers[i].tiles[c].tile.properties[t].value);
-				}
-			}
-			
-			layer.setRenderer(lime.Renderer.CANVAS);
-			
+			tile.pass = this.map_.layers[i].tiles[c].tile.properties.pass != 'false'
 			
 			layer.appendChild(tile);
 		}
@@ -129,10 +134,8 @@ lpc.levels.Level.prototype.tileIsPassable = function(value, opt_y){
     for(var i in this.map_.layers){
     	for(var t in this.map_.layers[i].tiles){
     		if(this.map_.layers[i].tiles[t].x == x && this.map_.layers[i].tiles[t].y == y){
-    			for(var p in this.map_.layers[i].tiles[t].tile.properties){
-    				if(this.map_.layers[i].tiles[t].tile.properties[p].name == 'pass' && this.map_.layers[i].tiles[t].tile.properties[p].value == 'false'){
-    					return false
-    				}
+    			if(this.map_.layers[i].tiles[t].tile.properties.pass == 'false'){
+    				return false;
     			}
     		}
     	}

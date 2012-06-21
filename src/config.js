@@ -6,7 +6,7 @@ goog.require('goog.math.Size');
 lpc.Config.GRID_CELL = 32;
 
 //tamanho da tela em células
-lpc.Config.GRID = new goog.math.Size(25, 20);
+lpc.Config.GRID = new goog.math.Size(25, 19);
 
 //tamanho da tela em pixels
 lpc.Config.SCREEN = new goog.math.Size(lpc.Config.GRID.width * lpc.Config.GRID_CELL, lpc.Config.GRID.height * lpc.Config.GRID_CELL);

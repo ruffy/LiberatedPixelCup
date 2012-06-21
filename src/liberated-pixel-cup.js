@@ -55,7 +55,7 @@ lpc.start = function(){
 			player.turn(e.input);
 			
 			if(!levelAnimating){
-				lime.scheduleManager.callAfter(moveLevel, this, 100);
+				lime.scheduleManager.callAfter(walk, this, 100);
 			}	
 				
 		}else if(e.input == ''){
@@ -69,7 +69,7 @@ lpc.start = function(){
 		blockedWay = e.side;
 	});
 	
-	function moveLevel(){
+	function walk(){
 		if(moveDirection != '' && !levelAnimating){
             levelAnimating = true;
             var move = null;
@@ -115,7 +115,7 @@ lpc.start = function(){
 	                
 	                blockedWay = '';
 	                levelAnimating = false;
-	                lime.scheduleManager.callAfter(moveLevel, this, 2); //pequeno intervalo antes de mover
+	                lime.scheduleManager.callAfter(walk, this, 2); //pequeno intervalo antes de mover
 	                movingDistance++;
 	            });
 	            

@@ -3,11 +3,26 @@
 <html>
 <head>
 	<title>LiberatedPixelCup</title>
-	<script type="text/javascript" src="lpc.js?v=2"></script>
+	<script type="text/javascript" src="lpc.js?v=3"></script>
+	
+	<style type="text/css" media="screen">
+		
+		
+		html, body, #game{
+			width:100%; height:100%;
+			overflow:hidden;
+			margin:0;
+		}
+		
+		#game{
+			max-width:800px; max-height:608px;
+			margin:auto;
+		}
+	</style>
 </head>
 
 <body onload="lpc.start()">
-	<div id="game" style="width:800px; height:640px; margin:50px auto;"></div>
+	<div id="game"></div>
 </body>
 
 </html>

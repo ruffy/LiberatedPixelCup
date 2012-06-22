@@ -83,26 +83,26 @@ lpc.start = function(){
             
             player.move(moveDirection);
             
-            var posi = player.getPositionOnGrid();
+            var position = player.getPositionOnGrid();
             
             switch(moveDirection){
                 case 'up':
-                if(level.tileIsPassable(posi.x, posi.y - 1))
+                if(level.tileIsPassable(position.x, position.y - 1) && position.y > 0)
                 	move = new lime.animation.MoveBy(0, -lpc.Config.GRID_CELL);
                 break;
                 
                 case 'down':
-                if(level.tileIsPassable(posi.x, posi.y + 1))
+                if(level.tileIsPassable(position.x, position.y + 1) && position.y < lpc.Config.GRID.height - 1)
                 	move = new lime.animation.MoveBy(0, lpc.Config.GRID_CELL);
                 break;
                 
                 case 'right':
-                if(level.tileIsPassable(posi.x + 1, posi.y))
+                if(level.tileIsPassable(position.x + 1, position.y) && position.x < lpc.Config.GRID.width - 1)
                 	move = new lime.animation.MoveBy(lpc.Config.GRID_CELL, 0);
                 break; 
                 
                 case 'left':
-                if(level.tileIsPassable(posi.x - 1, posi.y))
+                if(level.tileIsPassable(position.x - 1, position.y) && position.x > 0)
                 	move = new lime.animation.MoveBy(-lpc.Config.GRID_CELL, 0);
                 break;
             }

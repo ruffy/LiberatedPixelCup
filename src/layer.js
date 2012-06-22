@@ -29,7 +29,7 @@ lpc.Layer.prototype.setPositionOnGrid = function(value, opt_y){
         position = new goog.math.Coordinate(arguments[0], arguments[1]);
     }
     else {
-        position = value;
+        position = new goog.math.Coordinate(value.width, value.height);
     }
     
     position.x = Math.round(position.x) * lpc.Config.GRID_CELL;

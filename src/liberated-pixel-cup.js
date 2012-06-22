@@ -18,16 +18,14 @@ goog.require('lpc.Sprite');
 goog.require('lpc.Layer');
 goog.require('lime.parser.TMX');
 goog.require('lpc.levels.Level');
+goog.require('lpc.Fog');
 
 lpc.start = function(){
 	var director = new lime.Director(document.getElementById('game'), lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
-	    game = new lime.Scene(),
-	    charLayer = new lpc.Layer().setPosition(0,0),
-		player = new lpc.Player().setPositionOnGrid(10,10);
+	    game = new lime.Scene()
+		player = new lpc.Player().setPositionOnGrid((lpc.Config.GRID.width-1)/2, (lpc.Config.GRID.height-1)/2);
 		levelAnimating = false,
-		blockedWay = '',
-		moveDuration = .2,
-		movingDistance = 0,
+		moveDelay = .2;
 		moveDirection = '',
 		charDirection = '';
 	
@@ -38,8 +36,11 @@ lpc.start = function(){
 	
 	//level.toggleGrid();
 	
-	game.setChildIndex(charLayer, 1);
-
+	var fog = new lpc.Fog()
+	var night = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(0, 0).setFill('#000000').setOpacity(.6);
+	game.appendChild(fog);
+	game.appendChild(night);
+	
 	director.makeMobileWebAppCapable();
 	
 	director.replaceScene(game);
@@ -65,9 +66,6 @@ lpc.start = function(){
 		}
 	});
 	
-	goog.events.listen(player, lpc.events.CollisionEvent.COLLISION, function(e){
-		blockedWay = e.side;
-	});
 	
 	function walk(){
 		if(moveDirection != '' && !levelAnimating){
@@ -108,14 +106,15 @@ lpc.start = function(){
             }
             
             if(move){
-	            move.setDuration(moveDuration).setEasing(lime.animation.Easing.LINEAR);
+	            move.setDuration(moveDelay).setEasing(lime.animation.Easing.LINEAR);
 	    
 	            goog.events.listen(move, lime.animation.Event.STOP, function(){
 	                //level.roundPosition();
 	                
 	                blockedWay = '';
 	                levelAnimating = false;
-	                lime.scheduleManager.callAfter(walk, this, 2); //pequeno intervalo antes de mover
+	                walk();
+	                //lime.scheduleManager.callAfter(walk, this, 2); //pequeno intervalo antes de mover
 	                movingDistance++;
 	            });
 	            

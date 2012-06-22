@@ -18,7 +18,7 @@ lpc.Sprite.prototype.setSizeOnGrid = function(value, opt_height){
         size = new goog.math.Size(arguments[0], arguments[1]);
     }
     else {
-        size = value;
+        size = new goog.math.Size(value.width, value.height);
     }
 	
 	size.width *= lpc.Config.GRID_CELL;
@@ -69,7 +69,7 @@ lpc.Sprite.prototype.setPositionOnGrid = function(value, opt_y){
         position = new goog.math.Coordinate(arguments[0], arguments[1]);
     }
     else {
-        position = value;
+        position = new goog.math.Coordinate(value.x, value.y);
     }
     
     position.x = Math.round(position.x) * lpc.Config.GRID_CELL;

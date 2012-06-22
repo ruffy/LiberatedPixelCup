@@ -12,28 +12,13 @@ lpc.levels.Level = function(game, tmx){
 	
 	this.map_ = new lpc.utils.TMXParser(tmx);
 	
-	console.log(this.map_);
+	//console.log(this.map_);
 	
 	for(var i in this.map_.layers){
 		var layer = new lpc.Layer();
 		
 		game.appendChild(layer);
 		
-		/*for(var p in this.map_.layers[i].properties){
-			switch(this.map_.layers[i].properties[p].name){
-				case 'player':
-				this.charLayer_ = layer;
-				break;
-				
-				case 'renderer':
-				if(this.map_.layers[i].properties[p].value == 'canvas'){
-					layer.setRenderer(lime.Renderer.CANVAS);
-				}
-				break;
-			}
-		}*/
-		
-		console.log(this.map_.layers[i].properties['player']);
 		if(this.map_.layers[i].properties.player == 'true'){
 			this.charLayer_ = layer;
 		}else{
@@ -60,21 +45,21 @@ lpc.levels.Level = function(game, tmx){
 	this.gridIsVisible = function(){return grid_visible}
 	
 	this.buildGrid = function(){
-		grid.setSizeOnGrid(lpc.Config.GRID).setAnchorPoint(0,0).setPosition(0,0).setStroke(1, '#eeeeee');
+		grid.setSizeOnGrid(lpc.Config.GRID).setAnchorPoint(0,0).setPosition(0,0).setStroke(1, '#000000');
 		
 		var squareSize = lpc.Config.GRID_CELL;
 		
 		for(var i = 0; i+squareSize < grid.getSize().height; i+=squareSize){
-			var rect = new lime.Sprite().setAnchorPoint(0,0).setSize(grid.getSize().width,squareSize+1).setPosition(0, i).setStroke(1, '#eeeeee');
+			var rect = new lime.Sprite().setAnchorPoint(0,0).setSize(grid.getSize().width,squareSize+1).setPosition(0, i).setStroke(1, '#000000');
 			grid.appendChild(rect);
 		}
 		
 		for(var i = 0; i+squareSize < grid.getSize().width; i+=squareSize){
-			var rect = new lime.Sprite().setAnchorPoint(0,0).setSize(squareSize+1,grid.getSize().height).setPosition(i, 0).setStroke(1, '#eeeeee');
+			var rect = new lime.Sprite().setAnchorPoint(0,0).setSize(squareSize+1,grid.getSize().height).setPosition(i, 0).setStroke(1, '#000000');
 			grid.appendChild(rect);
 		}
 		
-		this.getLayers()[0].appendChild(grid);
+		game.appendChild(grid);
 		
 		grid_visible = true;
 	}

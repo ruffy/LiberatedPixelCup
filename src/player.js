@@ -9,8 +9,6 @@ goog.require('lpc.Config');
 
 lpc.Player = function(){
 	goog.base(this);
-	
-	var moving = false;
 	var direction = '';
 	var delay = .06;
 	
@@ -75,8 +73,6 @@ lpc.Player = function(){
 	this.animationLeft = new lime.animation.KeyframeAnimation().setDelay(delay);
 	this.animationLeft.setFrames(this.left);
 	
-	this.setMoving = function(value){moving = value; return this}
-	this.isMoving = function(){return moving}
 	this.setDirection = function(value){direction = value; return this}
 	this.getDirection = function(){return direction}
 }
@@ -104,8 +100,6 @@ lpc.Player.prototype.move = function(direction){
 		}
 		
 		this.setDirection(direction);
-		
-		this.setMoving(true);
 	}
 }
 
@@ -137,8 +131,6 @@ lpc.Player.prototype.stop = function(){
 	}
 	
 	this.setDirection('');
-	
-	this.setMoving(false);
 }
 
 lpc.Player.prototype.turn = function(side){

@@ -108,12 +108,12 @@ lpc.levels.Level.prototype.tileIsPassable = function(value, opt_y){
 		y;
 	
 	if (arguments.length == 2) {
-        x = arguments[0];
-        y = arguments[1];
+        x = Math.round(arguments[0]);
+        y = Math.round(arguments[1]);
     }
     else {
-        x = value.x;
-        y = value.y;
+        x = Math.round(value.x);
+        y = Math.round(value.y);
     }
     
     var pass = true;

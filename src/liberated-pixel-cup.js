@@ -22,10 +22,10 @@ goog.require('lpc.Fog');
 
 lpc.start = function(){
 	var director = new lime.Director(document.getElementById('game'), lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
-	    game = new lime.Scene()
-		player = new lpc.Player().setPositionOnGrid((lpc.Config.GRID.width-1)/2, (lpc.Config.GRID.height-1)/2);
+	    game = new lime.Scene(),
+		player = new lpc.Player().setPositionOnGrid((lpc.Config.GRID.width-1)/2, (lpc.Config.GRID.height-1)/2),
 		levelAnimating = false,
-		moveDelay = .2;
+		moveDelay = .25;
 		moveDirection = '',
 		charDirection = '';
 	
@@ -76,7 +76,7 @@ lpc.start = function(){
             if(moveDirection != charDirection){
                 charDirection = moveDirection;
                 movingDistance = 0;
-                wait = true;
+                //wait = true;
             }
             
             player.move(moveDirection);
@@ -109,24 +109,11 @@ lpc.start = function(){
 	            move.setDuration(moveDelay).setEasing(lime.animation.Easing.LINEAR);
 	    
 	            goog.events.listen(move, lime.animation.Event.STOP, function(){
-	                //level.roundPosition();
-	                
-	                blockedWay = '';
 	                levelAnimating = false;
 	                walk();
-	                //lime.scheduleManager.callAfter(walk, this, 2); //pequeno intervalo antes de mover
-	                movingDistance++;
 	            });
 	            
-	            move.addTarget(player);
-	                
-	            if(wait){
-	                lime.scheduleManager.callAfter(function(){
-	                    move.play();
-	                }, this, 35);// timming que controla o intervalo entre o personagem se virar e o mapa começar a mover
-	            }else{
-	                move.play();
-	            }
+	            player.runAction(move);
             }else{
             	levelAnimating = false;
             }

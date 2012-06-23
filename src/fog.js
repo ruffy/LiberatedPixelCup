@@ -9,34 +9,19 @@ goog.require('lime.animation.Easing');
 lpc.Fog = function(){
 	goog.base(this);
 	
-	var fog1 = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(0, 0);
-	fog1.setFill('assets/fog2.png', 'repeat').setOpacity(.4);
+	var fog = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID.width*2, lpc.Config.GRID.height).setPositionOnGrid(0, 0);
+	fog.setFill('assets/fog.png').setOpacity(.5);
 	
-	var fog2 = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(lpc.Config.GRID.width, 0);
-	fog2.setFill('assets/fog2.png', 'repeat').setOpacity(.4);
+	this.appendChild(fog);
 	
-	this.appendChild(fog1);
-	this.appendChild(fog2);
-	
-	var animation;
-	
-	animate();
-	
-	function animate(){
-		animation = new lime.animation.MoveBy(-lpc.Config.SCREEN.width, 0).setDuration(30).setEasing(lime.animation.Easing.LINEAR);
+	lime.scheduleManager.schedule(function(dt){
+		if(fog.getPosition().x - dt/10 > -(fog.getSize().width/2)){
+			fog.setPosition(fog.getPosition().x - dt/10, 0);
+		}else{
+			fog.setPositionOnGrid(0, 0);
+		}
 		
-		fog1.setPositionOnGrid(0, 0);
-		fog2.setPositionOnGrid(lpc.Config.GRID.width, 0);
-		
-		animation.addTarget(fog1);
-		animation.addTarget(fog2);
-		
-		goog.events.listen(animation, lime.animation.Event.STOP, function(){
-			animate();
-		});
-		
-		animation.play();
-	}
+	}, this);
 }
 
 goog.inherits(lpc.Fog, lpc.Sprite);

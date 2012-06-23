@@ -110,28 +110,27 @@ lpc.Player.prototype.move = function(direction){
 }
 
 lpc.Player.prototype.stop = function(){
-	this.animationUp.stop();
-	this.animationDown.stop();
-	this.animationRight.stop();
-	this.animationLeft.stop();
-	
 	switch(this.getDirection()){
 		case 'up':
+		this.animationUp.stop();
 		this.animationUp.play(); //bugfix
 		this.setFill(this.sheet.getFrame('soldier0000.png'));
 		break;
 		
 		case 'down':
+		this.animationDown.stop();
 		this.animationDown.play(); //bugfix
 		this.setFill(this.sheet.getFrame('soldier0018.png'));
 		break;
 		
 		case 'right':
+		this.animationRight.stop();
 		this.animationRight.play(); //bugfix
 		this.setFill(this.sheet.getFrame('soldier0027.png'));
 		break;
 		
 		case 'left':
+		this.animationLeft.stop();
 		this.animationLeft.play(); //bugfix
 		this.setFill(this.sheet.getFrame('soldier0009.png'));
 		break;

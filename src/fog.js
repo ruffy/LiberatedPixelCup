@@ -18,10 +18,12 @@ lpc.Fog = function(){
 	this.appendChild(fog1);
 	this.appendChild(fog2);
 	
+	var animation;
+	
 	animate();
 	
 	function animate(){
-		var animation = new lime.animation.MoveBy(-lpc.Config.SCREEN.width, 0).setDuration(30).setEasing(lime.animation.Easing.LINEAR);
+		animation = new lime.animation.MoveBy(-lpc.Config.SCREEN.width, 0).setDuration(30).setEasing(lime.animation.Easing.LINEAR);
 		
 		fog1.setPositionOnGrid(0, 0);
 		fog2.setPositionOnGrid(lpc.Config.GRID.width, 0);

@@ -18,6 +18,9 @@ lpc.Player = function(){
 	
 	this.setAnchorPoint(.25, .5).setSizeOnGrid(2, 2).setFill(this.sheet.getFrame('soldier0018.png'));
 	
+	var grid = new lpc.Sprite().setSizeOnGrid(1,1).setPosition(0,0).setStroke(1, '#eeeeee');
+	this.appendChild(grid);
+	
 	this.up = new Array( 
 		this.sheet.getFrame('soldier0000.png'),
 		this.sheet.getFrame('soldier0001.png'),

@@ -34,7 +34,7 @@ lpc.start = function(){
 	
 	level.getCharLayer().appendChild(player);
 	
-	//level.toggleGrid();
+	level.toggleGrid();
 	
 	var fog = new lpc.Fog().setQuality(.3)
 	var night = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(0, 0).setFill('#000000').setOpacity(.6);
@@ -63,13 +63,9 @@ lpc.start = function(){
 		}else if(e.input == ''){
 			lime.scheduleManager.unschedule(walk, this);
 			
-			var move = new goog.math.Coordinate((player.getPosition().x) / lpc.Config.GRID_CELL, (player.getPosition().y) / lpc.Config.GRID_CELL);
-			
-			player.runAction(new lime.animation.MoveTo(player.getPositionOnGrid().x * lpc.Config.GRID_CELL, player.getPositionOnGrid().y * lpc.Config.GRID_CELL).setDuration(.15).setEasing(lime.animation.Easing.LINEAR));
-			
-			lime.scheduleManager.callAfter(function(){
+			//lime.scheduleManager.callAfter(function(){
 				player.stop();
-			}, this, 150);
+			//}, this, 150);
 		}
 	});
 	
@@ -128,28 +124,52 @@ lpc.start = function(){
 	   	
 	   	player.move(moveDirection);
             
-		var position = player.getPositionOnGrid();
+		var position = player.getPosition();
+		var cornerLT = new goog.math.Coordinate(position.x/lpc.Config.GRID_CELL, position.y/lpc.Config.GRID_CELL);
+		var cornerLB = new goog.math.Coordinate(position.x/lpc.Config.GRID_CELL, (position.y + lpc.Config.GRID_CELL)/lpc.Config.GRID_CELL);
+		var cornerRT = new goog.math.Coordinate((position.x + lpc.Config.GRID_CELL)/lpc.Config.GRID_CELL, position.y/lpc.Config.GRID_CELL);
+		var cornerRB = new goog.math.Coordinate((position.x + lpc.Config.GRID_CELL)/lpc.Config.GRID_CELL, (position.y + lpc.Config.GRID_CELL)/lpc.Config.GRID_CELL);
 		var move;
 		
 	   	switch(moveDirection){
 	   		case 'up':
-            if(level.tileIsPassable(position.x, position.y - 1) && position.y > 0)
+	   		var lt = new goog.math.Coordinate(Math.floor(cornerLT.x), Math.floor(cornerLT.y - (1/lpc.Config.GRID_CELL)));
+	   		var rt = new goog.math.Coordinate(Math.floor(cornerRT.x), Math.floor(cornerRT.y - (1/lpc.Config.GRID_CELL)));
+	   		
+            if(level.tileIsPassable(lt) && level.tileIsPassable(rt) && lt.y + 1 > 0)
             	move = new goog.math.Coordinate(0, -1);
+            else
+            	player.setPosition(cornerLT.x * lpc.Config.GRID_CELL, Math.round(cornerLT.y) * lpc.Config.GRID_CELL);
             break;
             
             case 'down':
-            if(level.tileIsPassable(position.x, position.y + 1) && position.y < lpc.Config.GRID.height - 1)
+            var lb = new goog.math.Coordinate(Math.floor(cornerLB.x), Math.floor(cornerLB.y + (1/lpc.Config.GRID_CELL)));
+	   		var rb = new goog.math.Coordinate(Math.floor(cornerRB.x), Math.floor(cornerRB.y + (1/lpc.Config.GRID_CELL)));
+            
+            if(level.tileIsPassable(lb) && level.tileIsPassable(rb) && lb.y < lpc.Config.GRID.height)
             	move = new goog.math.Coordinate(0, 1);
+            else
+            	player.setPosition(cornerLT.x * lpc.Config.GRID_CELL, Math.round(cornerLT.y) * lpc.Config.GRID_CELL -1);
             break;
             
             case 'right':
-            if(level.tileIsPassable(position.x + 1, position.y) && position.x < lpc.Config.GRID.width - 1)
+            var rt = new goog.math.Coordinate(Math.floor(cornerRT.x + (1/lpc.Config.GRID_CELL)), Math.floor(cornerRT.y));
+	   		var rb = new goog.math.Coordinate(Math.floor(cornerRB.x + (1/lpc.Config.GRID_CELL)), Math.floor(cornerRB.y));
+            
+            if(level.tileIsPassable(rt) && level.tileIsPassable(rb) && rt.x < lpc.Config.GRID.width)
             	move = new goog.math.Coordinate(1, 0);
+            else
+            	player.setPosition(Math.round(cornerLT.x) * lpc.Config.GRID_CELL - 1, cornerLT.y * lpc.Config.GRID_CELL);
             break; 
             
             case 'left':
-            if(level.tileIsPassable(position.x - 1, position.y) && position.x > 0)
+            var lt = new goog.math.Coordinate(Math.floor(cornerLT.x - (1/lpc.Config.GRID_CELL)), Math.floor(cornerLT.y));
+	   		var lb = new goog.math.Coordinate(Math.floor(cornerLB.x - (1/lpc.Config.GRID_CELL)), Math.floor(cornerLB.y));
+	   		
+            if(level.tileIsPassable(lt) && level.tileIsPassable(lb) && lt.x + 1 > 0)
             	move = new goog.math.Coordinate(-1, 0);
+            else
+            	player.setPosition(Math.round(cornerLT.x) * lpc.Config.GRID_CELL, cornerLT.y * lpc.Config.GRID_CELL);
             break;
 	   	}
 	   

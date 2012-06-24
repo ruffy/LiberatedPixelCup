@@ -46,8 +46,8 @@ lpc.start = function(){
 	
 	director.replaceScene(game);
 	
-	//startGame();
-	intro();
+	startGame();
+	//intro();
 	
 	function intro(){
 		var introText = new lpc.Sprite().setPosition(lpc.Config.SCREEN.width/2, lpc.Config.SCREEN.height/2);
@@ -162,12 +162,14 @@ lpc.start = function(){
 				e.input == 'right' ||
 				e.input == 'left'){
 				
-				player.turn(e.input);
 				
 				lime.scheduleManager.unschedule(walk, this);
-				lime.scheduleManager.schedule(walk, this);
+				
+				player.move(moveDirection);
 					
+				lime.scheduleManager.schedule(walk, this);
 			}else if(e.input == ''){
+				console.log('stop');
 				lime.scheduleManager.unschedule(walk, this);
 				
 				player.stop();
@@ -177,8 +179,6 @@ lpc.start = function(){
 	
 	
 	function walk(dt){
-	   	player.move(moveDirection);
-            
 		var position = player.localToParent(player.hitArea.getPosition());
 		var size = player.hitArea.getSize();
 		

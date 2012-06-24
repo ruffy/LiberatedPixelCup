@@ -84,6 +84,8 @@ goog.inherits(lpc.Player, lpc.Sprite);
 
 lpc.Player.prototype.move = function(direction){
 	if(this.getDirection() != direction){
+		this.setDirection(direction);
+		
 		switch(direction){
 			case 'up':
 			this.runAction(this.animationUp);
@@ -101,30 +103,32 @@ lpc.Player.prototype.move = function(direction){
 			this.runAction(this.animationLeft);
 			break;
 		}
-		
-		this.setDirection(direction);
 	}
 }
 
 lpc.Player.prototype.stop = function(){
 	switch(this.getDirection()){
 		case 'up':
-		this.animationUp.removeTarget(this);
+		this.animationUp.stop();
+		this.animationUp.play();
 		this.setFill(this.sheet.getFrame('soldier0000.png'));
 		break;
 		
 		case 'down':
-		this.animationDown.removeTarget(this);
+		this.animationDown.stop();
+		this.animationDown.play();
 		this.setFill(this.sheet.getFrame('soldier0018.png'));
 		break;
 		
 		case 'right':
-		this.animationRight.removeTarget(this);
+		this.animationRight.stop();
+		this.animationRight.play();
 		this.setFill(this.sheet.getFrame('soldier0027.png'));
 		break;
 		
 		case 'left':
-		this.animationLeft.removeTarget(this);
+		this.animationLeft.stop();
+		this.animationLeft.play();
 		this.setFill(this.sheet.getFrame('soldier0009.png'));
 		break;
 	}

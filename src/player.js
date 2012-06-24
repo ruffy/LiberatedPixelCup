@@ -18,8 +18,8 @@ lpc.Player = function(){
 	
 	this.setAnchorPoint(.25, .5).setSizeOnGrid(2, 2).setFill(this.sheet.getFrame('soldier0018.png'));
 	
-	var grid = new lpc.Sprite().setSizeOnGrid(1,1).setPosition(0,0).setStroke(1, '#eeeeee');
-	this.appendChild(grid);
+	this.hitArea = new lpc.Sprite().setSize(26, 26).setPosition(3,3);//.setStroke(1, '#eeeeee');
+	this.appendChild(this.hitArea);
 	
 	this.up = new Array( 
 		this.sheet.getFrame('soldier0000.png'),
@@ -115,26 +115,22 @@ lpc.Player.prototype.move = function(direction){
 lpc.Player.prototype.stop = function(){
 	switch(this.getDirection()){
 		case 'up':
-		this.animationUp.stop();
-		this.animationUp.play(); //bugfix
+		this.animationUp.removeTarget(this);
 		this.setFill(this.sheet.getFrame('soldier0000.png'));
 		break;
 		
 		case 'down':
-		this.animationDown.stop();
-		this.animationDown.play(); //bugfix
+		this.animationDown.removeTarget(this);
 		this.setFill(this.sheet.getFrame('soldier0018.png'));
 		break;
 		
 		case 'right':
-		this.animationRight.stop();
-		this.animationRight.play(); //bugfix
+		this.animationRight.removeTarget(this);
 		this.setFill(this.sheet.getFrame('soldier0027.png'));
 		break;
 		
 		case 'left':
-		this.animationLeft.stop();
-		this.animationLeft.play(); //bugfix
+		this.animationLeft.removeTarget(this);
 		this.setFill(this.sheet.getFrame('soldier0009.png'));
 		break;
 	}

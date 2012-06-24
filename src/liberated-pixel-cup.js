@@ -46,8 +46,8 @@ lpc.start = function(){
 	
 	director.replaceScene(game);
 	
-	startGame();
-	//intro();
+	//startGame();
+	intro();
 	
 	function intro(){
 		var introText = new lpc.Sprite().setPosition(lpc.Config.SCREEN.width/2, lpc.Config.SCREEN.height/2);

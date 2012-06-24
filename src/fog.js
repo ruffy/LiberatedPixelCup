@@ -16,7 +16,7 @@ lpc.Fog = function(){
 	
 	lime.scheduleManager.schedule(function(dt){
 		if(fog.getPosition().x - dt/10 > -(fog.getSize().width/2)){
-			fog.setPosition(fog.getPosition().x - dt/10, 0);
+			fog.setPosition(fog.getPosition().x - dt/20, 0);
 		}else{
 			fog.setPositionOnGrid(0, 0);
 		}

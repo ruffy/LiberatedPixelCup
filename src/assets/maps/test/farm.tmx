@@ -29,6 +29,11 @@
  </tileset>
  <tileset firstgid="97" name="water" tilewidth="32" tileheight="32">
   <image source="tilesets/water.png" trans="ffffff" width="96" height="192"/>
+  <tile id="0">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
   <tile id="1">
    <properties>
     <property name="pass" value="false"/>

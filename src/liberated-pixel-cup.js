@@ -19,6 +19,7 @@ goog.require('lpc.Layer');
 goog.require('lime.parser.TMX');
 goog.require('lpc.levels.Level');
 goog.require('lpc.Fog');
+goog.require('lpc.InvadersControl');
 goog.require('lime.animation.FadeTo');
 
 lpc.start = function(){
@@ -175,6 +176,8 @@ lpc.start = function(){
 				player.stop();
 			}
 		});
+		
+		var invadersControl = new lpc.InvadersControl(level, player);
 	}
 	
 	

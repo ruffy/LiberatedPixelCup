@@ -170,7 +170,6 @@ lpc.start = function(){
 					
 				lime.scheduleManager.schedule(walk, this);
 			}else if(e.input == ''){
-				console.log('stop');
 				lime.scheduleManager.unschedule(walk, this);
 				
 				player.stop();

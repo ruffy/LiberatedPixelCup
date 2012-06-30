@@ -4,6 +4,8 @@ goog.require('goog.math');
 goog.require('goog.math.Coordinate');
 goog.require('lpc.Invader');
 goog.require('lime.scheduleManager');
+goog.require('lime.animation.MoveBy');
+goog.require('lime.animation.Spawn');
 
 lpc.InvadersControl = function(level, player){
 	var maxQuantity 	= 1,
@@ -38,6 +40,8 @@ lpc.InvadersControl = function(level, player){
 	
 	function createInvader(){
 		var position = new goog.math.Coordinate();
+		var anim = new lime.animation.MoveBy(0, 0);
+		var direction = 'right';
 		
 		do{
 			if(goog.math.randomInt(2) == 0){ // sorteio -> 0: aparecerá nas laterais / 1: aparecerá em cima ou embaixo.
@@ -51,21 +55,29 @@ lpc.InvadersControl = function(level, player){
 			}
 		}while(!level.tileIsPassable(position));
 		
-		if(position.x == 0)
+		if(position.x == 0){
 			position.x--;
-		else if(position.x == lpc.Config.GRID.width - 1)
+			anim = new lime.animation.MoveBy(lpc.Config.GRID_CELL, 0);
+			direction = 'right';
+		}else if(position.x == lpc.Config.GRID.width - 1){
 			position.x++;
-			
-		if(position.y == 0)
+			anim = new lime.animation.MoveBy(-lpc.Config.GRID_CELL, 0);
+			direction = 'left';
+		}else if(position.y == 0){
 			position.y--;
-		else if(position.y == lpc.Config.GRID.height - 1)
-			position.y++;
+			anim = new lime.animation.MoveBy(0, 2 * lpc.Config.GRID_CELL);
+			direction = 'down';
+		}else if(position.y == lpc.Config.GRID.height - 1){
+			position.y += 2;
+			anim = new lime.animation.MoveBy(0, -2 * lpc.Config.GRID_CELL);
+			direction = 'up';
+		}
 		
-		//TODO: criar animações e adicioná-las a um Spawn, para dispará-las abaixo
-		
-		var invader = new lpc.Invader().setPositionOnGrid(position);
+		var invader = new lpc.Invader().setPositionOnGrid(position).turn(direction);
 		level.getCharLayer().appendChild(invader);
 		invaders.push(invader);
+		
+		invader.runAction(anim);
 		
 		//goog.events.listen(invader, [lpc.events.InvaderEvent.DISAPEAR], removeInvader);
 		//goog.events.listen(invader, [lpc.events.InvaderEvent.MOVE], moveInvader);

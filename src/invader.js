@@ -12,7 +12,7 @@ lpc.Invader = function(player){
 	
 	this.player = player;
 	
-	var direction = '';
+	var direction = 'down';
 	var delay = .22;
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/ghost.png', lime.ASSETS.ghost.json, lime.parser.JSON);
@@ -61,5 +61,34 @@ lpc.Invader = function(player){
 goog.inherits(lpc.Invader, lpc.Sprite);
 
 lpc.Invader.prototype.turn = function(direction){
+	console.log(direction);
 	
+	if(this.getDirection() != direction){
+		this.setDirection(direction);
+		
+		this.animationUp.removeTarget(this);
+		this.animationDown.removeTarget(this);
+		this.animationRight.removeTarget(this);
+		this.animationLeft.removeTarget(this);
+		
+		switch(direction){
+			case 'up':
+			this.runAction(this.animationUp);
+			break;
+			
+			case 'down':
+			this.runAction(this.animationDown);
+			break;
+			
+			case 'right':
+			this.runAction(this.animationRight);
+			break;
+			
+			case 'left':
+			this.runAction(this.animationLeft);
+			break;
+		}
+	}
+	
+	return this;
 }

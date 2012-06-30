@@ -61,8 +61,6 @@ lpc.Invader = function(player){
 goog.inherits(lpc.Invader, lpc.Sprite);
 
 lpc.Invader.prototype.turn = function(direction){
-	console.log(direction);
-	
 	if(this.getDirection() != direction){
 		this.setDirection(direction);
 		

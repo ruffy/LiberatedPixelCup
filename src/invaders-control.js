@@ -12,13 +12,15 @@ lpc.InvadersControl = function(level, player){
 		invaderSpeed	= 10,
 		invaders		= new Array(),
 		counter			= 0;
-		interval		= 2000;
+		interval		= 4000;
 		
 	var self = this;
 		
 	manager();
 	
 	function manager(){
+		console.log(counter)
+		
 		if(counter == 4){
 			counter = 0;
 			maxQuantity++;
@@ -31,7 +33,9 @@ lpc.InvadersControl = function(level, player){
 		
 		counter++;
 		
-		lime.scheduleManager.callAfter(manager, self, interval)
+		lime.scheduleManager.callAfter(function(){
+			manager();
+		}, self, interval)
 	}
 	
 	function removeInvader(e){
@@ -77,7 +81,7 @@ lpc.InvadersControl = function(level, player){
 		level.getCharLayer().appendChild(invader);
 		invaders.push(invader);
 		
-		invader.runAction(anim);
+		invader.runAction(anim.setDuration(2.5));
 		
 		//goog.events.listen(invader, [lpc.events.InvaderEvent.DISAPEAR], removeInvader);
 		//goog.events.listen(invader, [lpc.events.InvaderEvent.MOVE], moveInvader);

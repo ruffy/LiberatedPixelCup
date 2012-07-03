@@ -25,18 +25,18 @@ goog.require('lime.animation.FadeTo');
 lpc.start = function(){
 	var director = new lime.Director(document.getElementById('game'), lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
 	    game = new lime.Scene(),
-		player = new lpc.Player().setPositionOnGrid((lpc.Config.GRID.width-1)/2, (lpc.Config.GRID.height-1)/2 -4).setOpacity(0),
+		player = new lpc.Player().setPositionOnGrid((lpc.Config.GRID.width-1)/2 -1, (lpc.Config.GRID.height-1)/2 -3).setOpacity(0),
 		levelAnimating = false,
 		moveDelay = .25;
 		moveDirection = '',
 		charDirection = '';
 	
-	var level = new lpc.levels.Level(game, 'assets/maps/test/farm.tmx');
+	var level = new lpc.levels.Level(game, 'assets/maps/farm.tmx');
 	var input = new lpc.inputs.KeyboardInput();
 	
 	level.getCharLayer().appendChild(player);
 	
-	//level.toggleGrid();
+	level.toggleGrid();
 	
 	var fog = new lpc.Fog().setQuality(.3)
 	var night = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(0, 0).setFill('#000000').setOpacity(.5);
@@ -165,10 +165,10 @@ lpc.start = function(){
 				
 				
 				lime.scheduleManager.unschedule(walk, this);
-				
-				player.move(moveDirection);
 					
 				lime.scheduleManager.schedule(walk, this);
+				
+				//player.move(moveDirection);
 			}else if(e.input == ''){
 				lime.scheduleManager.unschedule(walk, this);
 				
@@ -232,8 +232,10 @@ lpc.start = function(){
             break;
 	   	}
 	   
-	   	if(typeof move != 'undefined')
+	   	if(typeof move != 'undefined' && move != null){
 	   		player.setPosition(player.getPosition().x + (move.x * (dt/10)), player.getPosition().y + (move.y * (dt/10)));
+	   		player.move(moveDirection);
+	   	}
     }
 }
 

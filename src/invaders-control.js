@@ -28,6 +28,8 @@ lpc.InvadersControl = function(level, player){
 			createInvader();
 		}
 		
+		//moveInvaders();
+		
 		lime.scheduleManager.callAfter(function(){
 			manager();
 		}, self, interval)
@@ -55,20 +57,16 @@ lpc.InvadersControl = function(level, player){
 		//}while(!level.tileIsPassable(position));
 		
 		if(position.x == 0){
-			//position.x--;
-			anim = new lime.animation.MoveBy(lpc.Config.GRID_CELL, 0);
+			position.x--;
 			direction = 'right';
 		}else if(position.x == lpc.Config.GRID.width - 1){
-			//position.x++;
-			anim = new lime.animation.MoveBy(-lpc.Config.GRID_CELL, 0);
+			position.x++;
 			direction = 'left';
 		}else if(position.y == 0){
-			//position.y--;
-			anim = new lime.animation.MoveBy(0, 2 * lpc.Config.GRID_CELL);
+			position.y--;
 			direction = 'down';
 		}else if(position.y == lpc.Config.GRID.height - 1){
-			//position.y += 2;
-			anim = new lime.animation.MoveBy(0, -2 * lpc.Config.GRID_CELL);
+			position.y += 2;
 			direction = 'up';
 		}
 		
@@ -77,19 +75,11 @@ lpc.InvadersControl = function(level, player){
 		var invader = new lpc.Invader();
 		invader.setPositionOnGrid(position).turn(direction);
 		level.getCharLayer().appendChild(invader);
-		//invaders.push(invader);
+		invaders.push(invader);
 		invadersTiles[position.x + 'x' + position.y] = true; // ex: invadersTiles['7x9']
 	}
 	
-	function tileIsOccupied(position){
-		for(var i in invaders){
-			if( invaders[i].getPositionOnGrid().x == position.x &&
-				invaders[i].getPositionOnGrid().y == position.y){
-				
-				return true;
-			}
-		}
+	function moveInvaders(){
 		
-		return false;
 	}
 }

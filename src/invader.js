@@ -82,9 +82,9 @@ lpc.Invader = function(level, player){
 	
 	this.findPath = function(){
 		var aStar = new lpc.utils.AStar();
-		var path = aStar.AStar(level.tilesArray, [this.getPositionOnGrid().x, this.getPositionOnGrid().y], [player.getPositionOnGrid().x, player.getPositionOnGrid().y]);
+		this.path = aStar.AStar(level.tilesArray, [this.getPositionOnGrid().x, this.getPositionOnGrid().y], [player.getPositionOnGrid().x, player.getPositionOnGrid().y]);
 		
-		
+		this.walkPath();
 		
 		return this;
 	}
@@ -168,24 +168,32 @@ lpc.Invader.prototype.turn = function(side){
 	return this;
 }
 
+lpc.Invader.prototype.walkPath = function(){
+	if(this.path.length > 0){
+		this.walk(this.path.shift());
+	}else{
+		console.log(':/');
+	}
+}
+
 lpc.Invader.prototype.walk = function(step){
 	var positionOnGrid = new goog.math.Coordinate(this.getPositionOnGrid().x, this.getPositionOnGrid().y);
 	var position = new goog.math.Coordinate(0, 0);
 	
 	var direction;
 	
-	if(step.y < positionOnGrid.y){
+	if(step[1] < positionOnGrid.y){
 		direction = 'up';
-	}else if(step.y > positionOnGrid.y){
+	}else if(step[1] > positionOnGrid.y){
 		direction = 'down';
-	}else if(step.x > positionOnGrid.x){
+	}else if(step[0] > positionOnGrid.x){
 		direction = 'right';
-	}else if(step.x < positionOnGrid.x){
+	}else if(step[0] < positionOnGrid.x){
 		direction = 'left';
 	}
     
-    position.x = Math.round(step.x) * lpc.Config.GRID_CELL;
-	position.y = Math.round(step.y) * lpc.Config.GRID_CELL;
+    position.x = Math.round(step[0]) * lpc.Config.GRID_CELL;
+	position.y = Math.round(step[1]) * lpc.Config.GRID_CELL;
 	
 	this.move(direction);
 	
@@ -236,6 +244,8 @@ lpc.Invader.prototype.walk = function(step){
 		}else{
 			lime.scheduleManager.unschedule(doWalk, self);
 			self.stop(direction);
+			
+			this.walkPath();
 		}
 	}
 	

@@ -38,7 +38,14 @@ lpc.levels.Level = function(game, tmx){
 			tile.setFill(this.map_.layers[i].tiles[c].tile.frame);
 			
 			var pass = this.map_.layers[i].tiles[c].tile.properties.pass != 'false';
-			this.tilesArray[this.map_.layers[i].tiles[c].x + 'x' + this.map_.layers[i].tiles[c].y] = pass;
+			//this.tilesArray[this.map_.layers[i].tiles[c].x + 'x' + this.map_.layers[i].tiles[c].y] = pass;
+			var x = this.map_.layers[i].tiles[c].x;
+			var y = this.map_.layers[i].tiles[c].y;
+			
+			if(typeof this.tilesArray[x] == 'undefined' || this.tilesArray[x] == null){
+				this.tilesArray[x] = new Array();
+			}
+			this.tilesArray[x][y] = pass ? 0 : 1;
 			
 			layer.appendChild(tile);
 		}
@@ -118,7 +125,8 @@ lpc.levels.Level.prototype.tileIsPassable = function(value, opt_y){
         y = Math.round(value.y);
     }
     
-    var pass = this.tilesArray[x + 'x' + y];
+    //var pass = this.tilesArray[x + 'x' + y];
+    var pass = this.tilesArray[x][y] == 0;
     
     return pass != false; //se for false retorna false, se for qualquer outra coisa retorna true;
 }

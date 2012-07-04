@@ -6,8 +6,9 @@ goog.require('lime.animation.KeyframeAnimation');
 goog.require('lime.parser.JSON');
 goog.require('lime.ASSETS.skeleton.json');
 goog.require('lpc.Config');
+goog.require('lpc.utils.AStar');
 
-lpc.Invader = function(){
+lpc.Invader = function(level, player){
 	goog.base(this);
 	var direction = '';
 	var delay = .06;
@@ -78,6 +79,15 @@ lpc.Invader = function(){
 	
 	this.setDirection = function(value){direction = value; return this}
 	this.getDirection = function(){return direction}
+	
+	this.findPath = function(){
+		var aStar = new lpc.utils.AStar();
+		var path = aStar.AStar(level.tilesArray, [this.getPositionOnGrid().x, this.getPositionOnGrid().y], [player.getPositionOnGrid().x, player.getPositionOnGrid().y]);
+		
+		
+		
+		return this;
+	}
 }
 
 goog.inherits(lpc.Invader, lpc.Sprite);

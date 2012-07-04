@@ -158,30 +158,24 @@ lpc.Invader.prototype.turn = function(side){
 	return this;
 }
 
-lpc.Invader.prototype.walk = function(direction){
+lpc.Invader.prototype.walk = function(step){
 	var positionOnGrid = new goog.math.Coordinate(this.getPositionOnGrid().x, this.getPositionOnGrid().y);
 	var position = new goog.math.Coordinate(0, 0);
 	
-	switch(direction){
-		case 'up':
-		positionOnGrid.y -= 1;
-		break;
-		
-		case 'down':
-		positionOnGrid.y += 1;
-		break;
-		
-		case 'right':
-		positionOnGrid.x += 1;
-		break;
-		
-		case 'left':
-		positionOnGrid.x -= 1;
-		break;
+	var direction;
+	
+	if(step.y < positionOnGrid.y){
+		direction = 'up';
+	}else if(step.y > positionOnGrid.y){
+		direction = 'down';
+	}else if(step.x > positionOnGrid.x){
+		direction = 'right';
+	}else if(step.x < positionOnGrid.x){
+		direction = 'left';
 	}
     
-    position.x = Math.round(positionOnGrid.x) * lpc.Config.GRID_CELL;
-	position.y = Math.round(positionOnGrid.y) * lpc.Config.GRID_CELL;
+    position.x = Math.round(step.x) * lpc.Config.GRID_CELL;
+	position.y = Math.round(step.y) * lpc.Config.GRID_CELL;
 	
 	this.move(direction);
 	

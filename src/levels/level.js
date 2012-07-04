@@ -6,6 +6,7 @@ goog.require('lpc.utils.TMXParser')
 lpc.levels.Level = function(game, tmx){
 	this.layers_ = new Array();
 	this.charLayer_;
+	this.tilesArray = new Array();
 	
 	var grid_visible = false;
 	var grid = new lpc.Sprite();
@@ -36,7 +37,8 @@ lpc.levels.Level = function(game, tmx){
 			tile.setPositionOnGrid(this.map_.layers[i].tiles[c].x, this.map_.layers[i].tiles[c].y);
 			tile.setFill(this.map_.layers[i].tiles[c].tile.frame);
 			
-			tile.pass = this.map_.layers[i].tiles[c].tile.properties.pass != 'false'
+			var pass = this.map_.layers[i].tiles[c].tile.properties.pass != 'false';
+			this.tilesArray[this.map_.layers[i].tiles[c].x + 'x' + this.map_.layers[i].tiles[c].y] = pass;
 			
 			layer.appendChild(tile);
 		}
@@ -116,19 +118,7 @@ lpc.levels.Level.prototype.tileIsPassable = function(value, opt_y){
         y = Math.round(value.y);
     }
     
-    var pass = true;
+    var pass = this.tilesArray[x + 'x' + y];
     
-    for(var i in this.map_.layers){
-    	for(var t in this.map_.layers[i].tiles){
-    		if(this.map_.layers[i].tiles[t].x == x && this.map_.layers[i].tiles[t].y == y){
-    			if(this.map_.layers[i].tiles[t].tile.properties.pass == 'false'){
-    				pass = false;
-    			}else if(this.map_.layers[i].tiles[t].tile.properties.pass == 'true'){
-    				pass = true;
-    			}
-    		}
-    	}
-    }
-    
-    return pass;
+    return pass != false; //se for false retorna false, se for qualquer outra coisa retorna true;
 }

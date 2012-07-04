@@ -16,7 +16,7 @@ lpc.Player = function(){
 	
 	this.setAnchorPoint(.25, .5).setSizeOnGrid(2, 2).setFill(this.sheet.getFrame('farmer0018.png'));
 	
-	this.hitArea = new lpc.Sprite().setSize(26, 26).setPosition(3,3).setStroke(1, '#eeeeee');
+	this.hitArea = new lpc.Sprite().setSize(26, 26).setPosition(3,3);//.setStroke(1, '#eeeeee');
 	this.appendChild(this.hitArea);
 	
 	this.up = new Array( 

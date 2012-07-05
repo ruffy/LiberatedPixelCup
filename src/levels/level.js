@@ -42,10 +42,12 @@ lpc.levels.Level = function(game, tmx){
 			var x = this.map_.layers[i].tiles[c].x;
 			var y = this.map_.layers[i].tiles[c].y;
 			
-			if(typeof this.tilesArray[x] == 'undefined' || this.tilesArray[x] == null){
-				this.tilesArray[x] = new Array();
+			if(typeof this.tilesArray[y] == 'undefined' || this.tilesArray[y] == null){
+				this.tilesArray[y] = new Array();
 			}
-			this.tilesArray[x][y] = pass ? 0 : 1;
+			this.tilesArray[y][x] = pass ? 0 : 1;
+			
+			console.log(this.reversedTileArray);
 			
 			layer.appendChild(tile);
 		}
@@ -124,9 +126,8 @@ lpc.levels.Level.prototype.tileIsPassable = function(value, opt_y){
         x = Math.round(value.x);
         y = Math.round(value.y);
     }
-    
-    //var pass = this.tilesArray[x + 'x' + y];
-    var pass = this.tilesArray[x][y] == 0;
+   	
+    var pass = this.tilesArray[y][x] == 0;
     
     return pass != false; //se for false retorna false, se for qualquer outra coisa retorna true;
 }

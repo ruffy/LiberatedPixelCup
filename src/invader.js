@@ -12,6 +12,7 @@ lpc.Invader = function(level, player){
 	goog.base(this);
 	var direction = '';
 	var delay = .06;
+	var self = this;
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/skeleton.png', lime.ASSETS.skeleton.json, lime.parser.JSON);
 	
@@ -81,12 +82,18 @@ lpc.Invader = function(level, player){
 	this.getDirection = function(){return direction}
 	
 	this.findPath = function(){
-		var aStar = new lpc.utils.AStar();
-		this.path = aStar.AStar(level.tilesArray, [this.getPositionOnGrid().x, this.getPositionOnGrid().y], [player.getPositionOnGrid().x, player.getPositionOnGrid().y]);
+		buildPath();
 		
-		this.walkPath();
+		//lime.scheduleManager.scheduleWithDelay(buildPath, this, 300);
 		
 		return this;
+	}
+	
+	function buildPath(){
+		var aStar = new lpc.utils.AStar();
+		self.path = aStar.AStar(level.tilesArray, [self.getPositionOnGrid().x, self.getPositionOnGrid().y], [player.getPositionOnGrid().x, player.getPositionOnGrid().y]);
+		
+		self.walkPath();
 	}
 }
 
@@ -172,7 +179,7 @@ lpc.Invader.prototype.walkPath = function(){
 	if(this.path.length > 0){
 		this.walk(this.path.shift());
 	}else{
-		console.log(':/');
+		this.stop(this.getDirection());
 	}
 }
 
@@ -195,16 +202,19 @@ lpc.Invader.prototype.walk = function(step){
     position.x = Math.round(step[0]) * lpc.Config.GRID_CELL;
 	position.y = Math.round(step[1]) * lpc.Config.GRID_CELL;
 	
-	this.move(direction);
+	//this.move(direction);
 	
 	var self = this;
 	
-	lime.scheduleManager.schedule(doWalk, self);
+	this.setPositionOnGrid(step[0], step[1]);
+	this.walkPath();
+	
+	//lime.scheduleManager.schedule(doWalk, self);
 	
 	function doWalk(dt){
 		var x = 0,
 			y = 0;
-			
+		
 		switch(direction){
 			case 'up':
 			if(this.getPosition().y - (dt/10) > position.y){
@@ -243,7 +253,7 @@ lpc.Invader.prototype.walk = function(step){
 			this.setPosition(this.getPosition().x + x, this.getPosition().y + y);
 		}else{
 			lime.scheduleManager.unschedule(doWalk, self);
-			self.stop(direction);
+			//self.stop(direction);
 			
 			this.walkPath();
 		}

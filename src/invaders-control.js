@@ -29,7 +29,7 @@ lpc.InvadersControl = function(level, player){
 		}
 		
 		lime.scheduleManager.callAfter(function(){
-			//manager();
+			manager();
 		}, self, interval)
 	}
 	
@@ -42,34 +42,28 @@ lpc.InvadersControl = function(level, player){
 		var anim = new lime.animation.MoveBy(0, 0);
 		var direction = 'right';
 		
-		//do{
-			if(goog.math.randomInt(2) == 0){ // sorteio -> 0: aparecerá nas laterais / 1: aparecerá em cima ou embaixo.
-				position.x = goog.math.randomInt(2) * (lpc.Config.GRID.width - 1);
-					
-				position.y = goog.math.randomInt(lpc.Config.GRID.height);
-			}else{
-				position.y = goog.math.randomInt(2) * (lpc.Config.GRID.height - 1);
-					
-				position.x = goog.math.randomInt(lpc.Config.GRID.width);
-			}
-		//}while(!level.tileIsPassable(position));
+		if(goog.math.randomInt(2) == 0){ // sorteio -> 0: aparecerá nas laterais / 1: aparecerá em cima ou embaixo.
+			position.x = goog.math.randomInt(2) * (lpc.Config.GRID.width - 1);
+				
+			position.y = goog.math.randomInt(lpc.Config.GRID.height);
+		}else{
+			position.y = goog.math.randomInt(2) * (lpc.Config.GRID.height - 1);
+				
+			position.x = goog.math.randomInt(lpc.Config.GRID.width);
+		}
 		
-		/*if(position.x == 0){
-			position.x--;
+		if(position.x == 0){
 			direction = 'right';
 		}else if(position.x == lpc.Config.GRID.width - 1){
-			position.x++;
 			direction = 'left';
 		}else if(position.y == 0){
-			position.y--;
 			direction = 'down';
 		}else if(position.y == lpc.Config.GRID.height - 1){
-			position.y += 2;
 			direction = 'up';
-		}*/
+		}
 		
 		var invader = new lpc.Invader(level, player);
-		invader.setPositionOnGrid(position).turn('down').findPath();
+		invader.setPositionOnGrid(position).turn(direction).findPath();
 		level.getCharLayer().appendChild(invader);
 		invaders.push(invader);
 		invadersTiles[position.x + 'x' + position.y] = true; // ex: invadersTiles['7x9']

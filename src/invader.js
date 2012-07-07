@@ -202,14 +202,11 @@ lpc.Invader.prototype.walk = function(step){
     position.x = Math.round(step[0]) * lpc.Config.GRID_CELL;
 	position.y = Math.round(step[1]) * lpc.Config.GRID_CELL;
 	
-	//this.move(direction);
+	this.move(direction);
 	
 	var self = this;
 	
-	this.setPositionOnGrid(step[0], step[1]);
-	this.walkPath();
-	
-	//lime.scheduleManager.schedule(doWalk, self);
+	lime.scheduleManager.schedule(doWalk, self);
 	
 	function doWalk(dt){
 		var x = 0,

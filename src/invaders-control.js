@@ -14,7 +14,7 @@ lpc.InvadersControl = function(level, player){
 		invaderSpeed	= 10,
 		invaders		= new Array(),
 		invadersTiles	= new Array(),
-		interval		= 10000;
+		interval		= 1000;
 		
 	var self = this;
 	
@@ -22,7 +22,7 @@ lpc.InvadersControl = function(level, player){
 	
 	function manager(){
 		maxQuantity++;
-		interval -= 100;
+		//interval -= 100;
 		
 		if(invaders.length < maxQuantity){
 			createInvader();
@@ -65,7 +65,7 @@ lpc.InvadersControl = function(level, player){
 		var invader = new lpc.Invader(level, player);
 		invader.setPositionOnGrid(position).turn(direction).findPath();
 		level.getCharLayer().appendChild(invader);
-		invaders.push(invader);
-		invadersTiles[position.x + 'x' + position.y] = true; // ex: invadersTiles['7x9']
+		//invaders.push(invader);
+		//invadersTiles[position.x + 'x' + position.y] = true; // ex: invadersTiles['7x9']
 	}
 }

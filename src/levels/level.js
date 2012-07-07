@@ -22,15 +22,17 @@ lpc.levels.Level = function(game, tmx){
 		
 		if(this.map_.layers[i].properties.player == 'true'){
 			this.charLayer_ = layer;
+			layer.setRenderer(lime.Renderer.DOM);
 		}else{
 			this.layers_.push(layer);
+			layer.setRenderer(lime.Renderer.CANVAS);
 		}
 		
 		if(this.map_.layers[i].properties.renderer == 'canvas'){
 			layer.setRenderer(lime.Renderer.CANVAS);
 		}
 		
-		layer.setRenderer(lime.Renderer.CANVAS); //a performance em canvas é muito melhor no firefox (navegador que será usado pelos jurados)
+		//layer.setRenderer(lime.Renderer.CANVAS); //a performance em canvas é muito melhor no firefox (navegador que será usado pelos jurados)
 		
 		for(var c in this.map_.layers[i].tiles){
 			var tile = new lpc.Sprite().setAnchorPoint(0, 0).setSizeOnGrid(1, 1);

@@ -14,7 +14,7 @@ lpc.InvadersControl = function(level, player){
 		invaderSpeed	= 10,
 		invaders		= new Array(),
 		invadersTiles	= new Array(),
-		interval		= 1000;
+		interval		= 10000;
 		
 	var self = this;
 	
@@ -22,11 +22,11 @@ lpc.InvadersControl = function(level, player){
 	
 	function manager(){
 		maxQuantity++;
-		//interval -= 100;
-		
-		if(invaders.length < maxQuantity){
-			createInvader();
+		if(interval >= 600){
+			interval -= 100;
 		}
+		
+		createInvader();
 		
 		lime.scheduleManager.callAfter(function(){
 			manager();
@@ -42,15 +42,18 @@ lpc.InvadersControl = function(level, player){
 		var anim = new lime.animation.MoveBy(0, 0);
 		var direction = 'right';
 		
-		if(goog.math.randomInt(2) == 0){ // sorteio -> 0: aparecerá nas laterais / 1: aparecerá em cima ou embaixo.
-			position.x = goog.math.randomInt(2) * (lpc.Config.GRID.width - 1);
-				
-			position.y = goog.math.randomInt(lpc.Config.GRID.height);
-		}else{
-			position.y = goog.math.randomInt(2) * (lpc.Config.GRID.height - 1);
-				
-			position.x = goog.math.randomInt(lpc.Config.GRID.width);
-		}
+		do{
+			if(goog.math.randomInt(2) == 0){ // sorteio -> 0: aparecerá nas laterais / 1: aparecerá em cima ou embaixo.
+				position.x = goog.math.randomInt(2) * (lpc.Config.GRID.width - 1);
+					
+				position.y = goog.math.randomInt(lpc.Config.GRID.height);
+			}else{
+				position.y = goog.math.randomInt(2) * (lpc.Config.GRID.height - 1);
+					
+				position.x = goog.math.randomInt(lpc.Config.GRID.width);
+			}
+		}while(!level.tileIsPassable(position));
+		
 		
 		if(position.x == 0){
 			direction = 'right';
@@ -65,7 +68,6 @@ lpc.InvadersControl = function(level, player){
 		var invader = new lpc.Invader(level, player);
 		invader.setPositionOnGrid(position).turn(direction).findPath();
 		level.getCharLayer().appendChild(invader);
-		//invaders.push(invader);
 		//invadersTiles[position.x + 'x' + position.y] = true; // ex: invadersTiles['7x9']
 	}
 }

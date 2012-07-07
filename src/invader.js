@@ -10,6 +10,9 @@ goog.require('lpc.utils.AStar');
 
 lpc.Invader = function(level, player){
 	goog.base(this);
+	
+	this.level = level;
+	this.player = player;
 	var direction = '';
 	var delay = .06;
 	var self = this;
@@ -84,13 +87,12 @@ lpc.Invader = function(level, player){
 	this.findPath = function(){
 		buildPath();
 		
-		//lime.scheduleManager.scheduleWithDelay(buildPath, this, 300);
-		
 		return this;
 	}
 	
+	var aStar = new lpc.utils.AStar();
+	
 	function buildPath(){
-		var aStar = new lpc.utils.AStar();
 		self.path = aStar.AStar(level.tilesArray, [self.getPositionOnGrid().x, self.getPositionOnGrid().y], [player.getPositionOnGrid().x, player.getPositionOnGrid().y]);
 		
 		self.walkPath();
@@ -177,7 +179,15 @@ lpc.Invader.prototype.turn = function(side){
 
 lpc.Invader.prototype.walkPath = function(){
 	if(this.path.length > 0){
-		this.walk(this.path.shift());
+		var step = this.path.shift();
+		
+		if(this.level.tileIsPassable(step[0], step[1])){
+			this.walk(step);
+		}else{
+			this.stop(this.getDirection());
+			this.findPath();
+		}
+		
 	}else{
 		this.stop(this.getDirection());
 	}
@@ -202,6 +212,8 @@ lpc.Invader.prototype.walk = function(step){
     position.x = Math.round(step[0]) * lpc.Config.GRID_CELL;
 	position.y = Math.round(step[1]) * lpc.Config.GRID_CELL;
 	
+	this.level.tilesArray[step[1]][step[0]] = 1;
+	
 	this.move(direction);
 	
 	var self = this;
@@ -214,26 +226,26 @@ lpc.Invader.prototype.walk = function(step){
 		
 		switch(direction){
 			case 'up':
-			if(this.getPosition().y - (dt/10) > position.y){
-				y = -(dt/10);
+			if(this.getPosition().y - (dt/12) > position.y){
+				y = -(dt/12);
 			}
 			break;
 			
 			case 'down':
-			if(this.getPosition().y + (dt/10) < position.y){
-				y = dt/10;
+			if(this.getPosition().y + (dt/12) < position.y){
+				y = dt/12;
 			}
 			break;
 			
 			case 'right':
-			if(this.getPosition().x + (dt/10) < position.x){
-				x = dt/10;
+			if(this.getPosition().x + (dt/12) < position.x){
+				x = dt/12;
 			}
 			break;
 			
 			case 'left':
-			if(this.getPosition().x - (dt/10) > position.x){
-				x = -(dt/10);
+			if(this.getPosition().x - (dt/12) > position.x){
+				x = -(dt/12);
 			}
 			break;
 		}
@@ -251,6 +263,7 @@ lpc.Invader.prototype.walk = function(step){
 		}else{
 			lime.scheduleManager.unschedule(doWalk, self);
 			//self.stop(direction);
+			this.level.tilesArray[positionOnGrid.y][positionOnGrid.x] = 0;
 			
 			this.walkPath();
 		}

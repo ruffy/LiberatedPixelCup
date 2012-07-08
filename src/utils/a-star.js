@@ -89,8 +89,7 @@ lpc.utils.AStar.prototype.AStar = function(grid, start, end, f) {
         result = [],
         open = [{x:start[0], y:start[1], f:0, g:0, v:start[0]+start[1]*cols}],
         length = 1,
-        adj, distance, find, i, j, max, min, current, next
-    ;
+        adj, distance, find, i, j, max, min, current, next;
     end = {x:end[0], y:end[1], v:end[0]+end[1]*cols};
     switch (f) {
         case "Diagonal":

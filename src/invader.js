@@ -83,23 +83,21 @@ lpc.Invader = function(level, player){
 	
 	this.setDirection = function(value){direction = value; return this}
 	this.getDirection = function(){return direction}
-	
-	this.findPath = function(){
-		buildPath();
-		
-		return this;
-	}
-	
-	var aStar = new lpc.utils.AStar();
-	
-	function buildPath(){
-		self.path = aStar.AStar(level.tilesArray, [self.getPositionOnGrid().x, self.getPositionOnGrid().y], [player.getPositionOnGrid().x, player.getPositionOnGrid().y]);
-		
-		self.walkPath();
-	}
 }
 
 goog.inherits(lpc.Invader, lpc.Sprite);
+
+lpc.Invader.prototype.findPath = function(){
+	var aStar = new lpc.utils.AStar();
+	
+	this.path = aStar.AStar(this.level.tilesArray, [this.getPositionOnGrid().x, this.getPositionOnGrid().y], [this.player.getPositionOnGrid().x, this.player.getPositionOnGrid().y]);
+	
+	this.path.shift();
+	
+	this.walkPath();
+	
+	return this;
+}
 
 lpc.Invader.prototype.move = function(direction){
 	if(this.getDirection() != direction){
@@ -123,6 +121,8 @@ lpc.Invader.prototype.move = function(direction){
 			break;
 		}
 	}
+	
+	return this;
 }
 
 lpc.Invader.prototype.stop = function(){
@@ -153,6 +153,8 @@ lpc.Invader.prototype.stop = function(){
 	}
 	
 	this.setDirection('');
+	
+	return this;
 }
 
 lpc.Invader.prototype.turn = function(side){
@@ -191,6 +193,8 @@ lpc.Invader.prototype.walkPath = function(){
 	}else{
 		this.stop(this.getDirection());
 	}
+	
+	return this;
 }
 
 lpc.Invader.prototype.walk = function(step){
@@ -226,25 +230,25 @@ lpc.Invader.prototype.walk = function(step){
 		
 		switch(direction){
 			case 'up':
-			if(this.getPosition().y - (dt/12) > position.y){
+			if(this.getPosition().y - (dt/14) > position.y){
 				y = -(dt/12);
 			}
 			break;
 			
 			case 'down':
-			if(this.getPosition().y + (dt/12) < position.y){
+			if(this.getPosition().y + (dt/14) < position.y){
 				y = dt/12;
 			}
 			break;
 			
 			case 'right':
-			if(this.getPosition().x + (dt/12) < position.x){
+			if(this.getPosition().x + (dt/14) < position.x){
 				x = dt/12;
 			}
 			break;
 			
 			case 'left':
-			if(this.getPosition().x - (dt/12) > position.x){
+			if(this.getPosition().x - (dt/14) > position.x){
 				x = -(dt/12);
 			}
 			break;
@@ -265,7 +269,9 @@ lpc.Invader.prototype.walk = function(step){
 			//self.stop(direction);
 			this.level.tilesArray[positionOnGrid.y][positionOnGrid.x] = 0;
 			
-			this.walkPath();
+			this.findPath();
+			
+			//this.walkPath();
 		}
 	}
 	

@@ -49,8 +49,6 @@ lpc.levels.Level = function(game, tmx){
 			}
 			this.tilesArray[y][x] = pass ? 0 : 1;
 			
-			console.log(this.reversedTileArray);
-			
 			layer.appendChild(tile);
 		}
 	}

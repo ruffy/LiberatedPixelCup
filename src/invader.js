@@ -16,6 +16,7 @@ lpc.Invader = function(level, player){
 	var direction = '';
 	var delay = .06;
 	var self = this;
+	this.speedFactor = 20;
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/skeleton.png', lime.ASSETS.skeleton.json, lime.parser.JSON);
 	
@@ -90,7 +91,12 @@ goog.inherits(lpc.Invader, lpc.Sprite);
 lpc.Invader.prototype.findPath = function(){
 	var aStar = new lpc.utils.AStar();
 	
-	this.path = aStar.AStar(this.level.tilesArray, [this.getPositionOnGrid().x, this.getPositionOnGrid().y], [this.player.getPositionOnGrid().x, this.player.getPositionOnGrid().y]);
+	var startX = Math.floor((this.getPosition().x + this.hitArea.getPosition().x) / lpc.Config.GRID_CELL),
+		startY = Math.floor((this.getPosition().y + this.hitArea.getPosition().y) / lpc.Config.GRID_CELL),
+		endX = Math.floor((this.player.getPosition().x + this.player.hitArea.getPosition().x) / lpc.Config.GRID_CELL),
+		endY = Math.floor((this.player.getPosition().y + this.player.hitArea.getPosition().y) / lpc.Config.GRID_CELL);
+	
+	this.path = aStar.AStar(this.level.tilesArray, [startX, startY], [endX, endY]);
 	
 	this.path.shift();
 	
@@ -230,25 +236,25 @@ lpc.Invader.prototype.walk = function(step){
 		
 		switch(direction){
 			case 'up':
-			if(this.getPosition().y - (dt/14) > position.y){
+			if(this.getPosition().y - (dt/this.speedFactor) > position.y){
 				y = -(dt/12);
 			}
 			break;
 			
 			case 'down':
-			if(this.getPosition().y + (dt/14) < position.y){
+			if(this.getPosition().y + (dt/this.speedFactor) < position.y){
 				y = dt/12;
 			}
 			break;
 			
 			case 'right':
-			if(this.getPosition().x + (dt/14) < position.x){
+			if(this.getPosition().x + (dt/this.speedFactor) < position.x){
 				x = dt/12;
 			}
 			break;
 			
 			case 'left':
-			if(this.getPosition().x - (dt/14) > position.x){
+			if(this.getPosition().x - (dt/this.speedFactor) > position.x){
 				x = -(dt/12);
 			}
 			break;

@@ -36,10 +36,10 @@ lpc.start = function(){
 	
 	level.getCharLayer().appendChild(player);
 	
-	level.toggleGrid();
+	//level.toggleGrid();
 	
 	var fog = new lpc.Fog().setQuality(.3)
-	var night = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(0, 0).setFill('#0F0F2D').setOpacity(.5);
+	var night = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(0, 0).setFill('#0F0F2D').setOpacity(.45);
 	game.appendChild(fog);
 	game.appendChild(night);
 	

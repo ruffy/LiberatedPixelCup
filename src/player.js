@@ -19,6 +19,9 @@ lpc.Player = function(){
 	this.hitArea = new lpc.Sprite().setSize(26, 26).setPosition(3,3);//.setStroke(1, '#eeeeee');
 	this.appendChild(this.hitArea);
 	
+	this.halo = new lpc.Sprite().setFill('assets/halo.png').setPosition(-48,-32).setOpacity(.85);
+	this.appendChild(this.halo);
+	
 	this.up = new Array( 
 		this.sheet.getFrame('farmer0000.png'),
 		this.sheet.getFrame('farmer0001.png'),
@@ -89,18 +92,22 @@ lpc.Player.prototype.move = function(direction){
 		switch(direction){
 			case 'up':
 			this.runAction(this.animationUp);
+			this.halo.setPosition(-24,-40);
 			break;
 			
 			case 'down':
 			this.runAction(this.animationDown);
+			this.halo.setPosition(-48,-32);
 			break;
 			
 			case 'right':
 			this.runAction(this.animationRight);
+			this.halo.setPosition(-32,-32);
 			break;
 			
 			case 'left':
 			this.runAction(this.animationLeft);
+			this.halo.setPosition(-48,-32);
 			break;
 		}
 	}

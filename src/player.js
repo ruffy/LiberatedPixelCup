@@ -9,7 +9,7 @@ goog.require('lpc.Config');
 
 lpc.Player = function(){
 	goog.base(this);
-	var direction = '';
+	var direction = 'down';
 	var delay = .05;
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/farmer.png', lime.ASSETS.farmer.json, lime.parser.JSON);
@@ -81,9 +81,57 @@ lpc.Player = function(){
 	
 	this.setDirection = function(value){direction = value; return this}
 	this.getDirection = function(){return direction}
+	
+	this.torchPosition = [];
+	
+	lime.scheduleManager.schedule(function(){
+		switch(this.getDirection()){
+			case 'up':
+			this.torchPosition[0] = new goog.math.Coordinate(this.getPositionOnGrid().x - 1, this.getPositionOnGrid().y - 1);
+			this.torchPosition[1] = new goog.math.Coordinate(this.getPositionOnGrid().x, this.getPositionOnGrid().y - 1);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x + 1, this.getPositionOnGrid().y - 1);
+			this.torchPosition[3] = new goog.math.Coordinate(this.getPositionOnGrid().x - 2, this.getPositionOnGrid().y - 1);
+			this.torchPosition[4] = new goog.math.Coordinate(this.getPositionOnGrid().x + 2, this.getPositionOnGrid().y - 1);
+			break;
+			
+			case 'down':
+			this.torchPosition[0] = new goog.math.Coordinate(this.getPositionOnGrid().x - 1, this.getPositionOnGrid().y + 1);
+			this.torchPosition[1] = new goog.math.Coordinate(this.getPositionOnGrid().x, this.getPositionOnGrid().y + 1);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x + 1, this.getPositionOnGrid().y + 1);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x - 2, this.getPositionOnGrid().y + 1);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x + 2, this.getPositionOnGrid().y + 1);
+			break;
+			
+			case 'right':
+			this.torchPosition[0] = new goog.math.Coordinate(this.getPositionOnGrid().x + 1, this.getPositionOnGrid().y - 1);
+			this.torchPosition[1] = new goog.math.Coordinate(this.getPositionOnGrid().x + 1, this.getPositionOnGrid().y);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x + 1, this.getPositionOnGrid().y + 1);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x + 1, this.getPositionOnGrid().y - 2);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x + 1, this.getPositionOnGrid().y + 2);
+			break;
+			
+			case 'left':
+			this.torchPosition[0] = new goog.math.Coordinate(this.getPositionOnGrid().x - 1, this.getPositionOnGrid().y - 1);
+			this.torchPosition[1] = new goog.math.Coordinate(this.getPositionOnGrid().x - 1, this.getPositionOnGrid().y);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x - 1, this.getPositionOnGrid().y + 1);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x - 1, this.getPositionOnGrid().y - 2);
+			this.torchPosition[2] = new goog.math.Coordinate(this.getPositionOnGrid().x - 1, this.getPositionOnGrid().y + 2);
+			break;
+		}
+	}, this);
 }
 
 goog.inherits(lpc.Player, lpc.Sprite);
+
+lpc.Player.prototype.isTorchPosition = function(x, y){
+	for(var i = 0, ii = this.torchPosition.length; i < ii; i++){
+		if(this.torchPosition[i].x == x && this.torchPosition[i].y == y){
+			return true;
+		}
+	}
+	
+	return false;
+}
 
 lpc.Player.prototype.move = function(direction){
 	if(this.getDirection() != direction){

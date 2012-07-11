@@ -54,7 +54,6 @@ lpc.InvadersControl = function(level, player){
 			}
 		}while(!level.tileIsPassable(position));
 		
-		
 		if(position.x == 0){
 			direction = 'right';
 		}else if(position.x == lpc.Config.GRID.width - 1){
@@ -68,6 +67,5 @@ lpc.InvadersControl = function(level, player){
 		var invader = new lpc.Invader(level, player);
 		invader.setPositionOnGrid(position).turn(direction).findPath();
 		level.getCharLayer().appendChild(invader);
-		//invadersTiles[position.x + 'x' + position.y] = true; // ex: invadersTiles['7x9']
 	}
 }

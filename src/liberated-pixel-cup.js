@@ -163,7 +163,6 @@ lpc.start = function(){
 				e.input == 'right' ||
 				e.input == 'left'){
 				
-				
 				lime.scheduleManager.unschedule(walk, this);
 					
 				lime.scheduleManager.schedule(walk, this);
@@ -231,11 +230,12 @@ lpc.start = function(){
             	player.setPosition(Math.round(cornerLT.x) * lpc.Config.GRID_CELL - player.hitArea.getPosition().x, cornerLT.y * lpc.Config.GRID_CELL - player.hitArea.getPosition().y);
             break;
 	   	}
-	   
+	    
 	   	if(typeof move != 'undefined' && move != null){
 	   		player.setPosition(player.getPosition().x + (move.x * (dt/10)), player.getPosition().y + (move.y * (dt/10)));
-	   		player.move(moveDirection);
 	   	}
+	   	
+	   	player.move(moveDirection);
     }
 }
 

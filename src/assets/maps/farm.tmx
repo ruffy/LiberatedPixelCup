@@ -190,6 +190,31 @@
     <property name="pass" value="false"/>
    </properties>
   </tile>
+  <tile id="18">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
+  <tile id="24">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
+  <tile id="31">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="268" name="treetop" tilewidth="32" tileheight="32">
   <image source="treetop.png" trans="ffffff" width="192" height="224"/>

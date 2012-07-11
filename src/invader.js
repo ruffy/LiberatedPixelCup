@@ -189,7 +189,9 @@ lpc.Invader.prototype.walkPath = function(){
 	if(this.path.length > 0){
 		var step = this.path.shift();
 		
-		if(this.level.tileIsPassable(step[0], step[1])){
+		if(	this.level.tileIsPassable(step[0], step[1]) ||
+			!this.isTorchPosition(step[0], step[1])){
+			
 			this.walk(step);
 		}else{
 			this.stop(this.getDirection());

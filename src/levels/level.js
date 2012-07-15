@@ -7,6 +7,7 @@ lpc.levels.Level = function(game, tmx){
 	this.layers_ = new Array();
 	this.charLayer_;
 	this.tilesArray = new Array();
+	this.tilesArrayModified = new Array();
 	
 	var grid_visible = false;
 	var grid = new lpc.Sprite();
@@ -46,8 +47,10 @@ lpc.levels.Level = function(game, tmx){
 			
 			if(typeof this.tilesArray[y] == 'undefined' || this.tilesArray[y] == null){
 				this.tilesArray[y] = new Array();
+				this.tilesArrayModified[y] = new Array();
 			}
 			this.tilesArray[y][x] = pass ? 0 : 1;
+			this.tilesArrayModified[y][x] = pass ? 0 : 1;
 			
 			layer.appendChild(tile);
 		}

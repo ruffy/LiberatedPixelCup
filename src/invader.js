@@ -92,11 +92,50 @@ lpc.Invader.prototype.findPath = function(){
 	var aStar = new lpc.utils.AStar();
 	
 	var startX = Math.floor((this.getPosition().x + this.hitArea.getPosition().x) / lpc.Config.GRID_CELL),
-		startY = Math.floor((this.getPosition().y + this.hitArea.getPosition().y) / lpc.Config.GRID_CELL),
+		startY = Math.floor((this.getPosition().y + this.hitArea.getPosition().y) / lpc.Config.GRID_CELL);
+		//endX = Math.floor((this.player.getPosition().x + this.player.hitArea.getPosition().x) / lpc.Config.GRID_CELL),
+		//endY = Math.floor((this.player.getPosition().y + this.player.hitArea.getPosition().y) / lpc.Config.GRID_CELL);
+	
+	console.log(this.player.getDirection());
+	
+	if( this.player.getPositionOnGrid().x - this.getPositionOnGrid().x > 0 &&
+		this.player.getPositionOnGrid().x - this.getPositionOnGrid().x < 4 &&
+		this.player.getDirection() == 'left'){
+		
+		endX = 0;
+		do{
+			endY = goog.math.randomInt(lpc.Config.GRID.height);
+		}while(!this.level.tileIsPassable(endX, endY));
+	}else if(	this.player.getPositionOnGrid().x - this.getPositionOnGrid().x < 0 	&&
+				this.player.getPositionOnGrid().x - this.getPositionOnGrid().x > -4 &&
+				this.player.getDirection() == 'right'){
+		
+		endX = lpc.Config.GRID.width - 1;
+		do{
+			endY = goog.math.randomInt(lpc.Config.GRID.height);
+		}while(!this.level.tileIsPassable(endX, endY));
+	}else if(	this.player.getPositionOnGrid().y - this.getPositionOnGrid().y > 0 &&
+				this.player.getPositionOnGrid().y - this.getPositionOnGrid().y < 4 &&
+				this.player.getDirection() == 'up'){
+		
+		endY = 0;
+		do{
+			endX = goog.math.randomInt(lpc.Config.GRID.width);
+		}while(!this.level.tileIsPassable(endX, endY));
+	}else if(	this.player.getPositionOnGrid().y - this.getPositionOnGrid().y < 0 	&&
+				this.player.getPositionOnGrid().y - this.getPositionOnGrid().y > -4 &&
+				this.player.getDirection() == 'down'){
+		
+		endY = lpc.Config.GRID.height - 1;
+		do{
+			endX = goog.math.randomInt(lpc.Config.GRID.width);
+		}while(!this.level.tileIsPassable(endX, endY));
+	}else{
 		endX = Math.floor((this.player.getPosition().x + this.player.hitArea.getPosition().x) / lpc.Config.GRID_CELL),
 		endY = Math.floor((this.player.getPosition().y + this.player.hitArea.getPosition().y) / lpc.Config.GRID_CELL);
+	}
 	
-	this.path = aStar.AStar(this.level.tilesArray, [startX, startY], [endX, endY]);
+	this.path = aStar.AStar(this.level.tilesArrayModified, [startX, startY], [endX, endY]);
 	
 	this.path.shift();
 	
@@ -189,9 +228,7 @@ lpc.Invader.prototype.walkPath = function(){
 	if(this.path.length > 0){
 		var step = this.path.shift();
 		
-		if(	this.level.tileIsPassable(step[0], step[1]) ||
-			!this.isTorchPosition(step[0], step[1])){
-			
+		if(	this.level.tileIsPassable(step[0], step[1])){
 			this.walk(step);
 		}else{
 			this.stop(this.getDirection());
@@ -225,6 +262,7 @@ lpc.Invader.prototype.walk = function(step){
 	position.y = Math.round(step[1]) * lpc.Config.GRID_CELL;
 	
 	this.level.tilesArray[step[1]][step[0]] = 1;
+	this.level.tilesArrayModified[step[1]][step[0]] = 1;
 	
 	this.move(direction);
 	
@@ -276,6 +314,7 @@ lpc.Invader.prototype.walk = function(step){
 			lime.scheduleManager.unschedule(doWalk, self);
 			//self.stop(direction);
 			this.level.tilesArray[positionOnGrid.y][positionOnGrid.x] = 0;
+			this.level.tilesArrayModified[positionOnGrid.y][positionOnGrid.x] = 0;
 			
 			this.findPath();
 			

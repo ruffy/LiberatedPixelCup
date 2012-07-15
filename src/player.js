@@ -84,25 +84,14 @@ lpc.Player = function(){
 	this.getDirection = function(){return direction}
 	this.setStoped = function(value){stoped = value; return this}
 	this.isStoped = function(){return stoped}
-	
-	this.torchPosition = [];
 }
 
 goog.inherits(lpc.Player, lpc.Sprite);
 
-lpc.Player.prototype.isTorchPosition = function(x, y){
-	for(var i = 0, ii = this.torchPosition.length; i < ii; i++){
-		if(this.torchPosition[i].x == x && this.torchPosition[i].y == y){
-			return true;
-		}
-	}
-	
-	return false;
-}
-
 lpc.Player.prototype.move = function(direction){
 	if(this.getDirection() != direction || this.isStoped()){
 		this.setDirection(direction);
+		this.setStoped(false);
 		
 		switch(direction){
 			case 'up':

@@ -14,9 +14,9 @@ lpc.Invader = function(level, player){
 	this.level = level;
 	this.player = player;
 	var direction = '';
-	var delay = .1;
+	var delay = .08;
 	var self = this;
-	this.speedFactor = 80;
+	this.speedFactor = 120;
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/skeleton.png', lime.ASSETS.skeleton.json, lime.parser.JSON);
 	
@@ -98,16 +98,16 @@ lpc.Invader.prototype.findPath = function(){
 	
 	switch(this.player.getDirection()){
 		case 'up':
-		if( this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x > this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x - 3 &&
-			this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x < this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x + 3 &&
+		if( this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x > this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x - 2 &&
+			this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x < this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x + 2 &&
 			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) < 0 &&
-			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) > -3){
+			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) > -4){
 			
 			endY = 0;
 			endX = this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x;
 			
 			var i = 1;
-			while(!this.level.tileIsPassable(endX, endY) && i < lpc.Config.GRID.width){
+			while(!this.level.tileIsPassable(endX, endY) && i < lpc.Config.GRID.width/2){
 				if(this.level.tileIsPassable(endX + i, endY)){
 					endX += i;
 					break;
@@ -122,41 +122,74 @@ lpc.Invader.prototype.findPath = function(){
 		break;
 		
 		case 'down':
-		if( this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x > this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x - 3 &&
-			this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x < this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x + 3 &&
+		if( this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x > this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x - 2 &&
+			this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x < this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x + 2 &&
 			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) > 0 &&
-			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) < 3){
+			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) < 4){
 			
 			endY = lpc.Config.GRID.height - 1;
-			do{
-				endX = goog.math.randomInt(lpc.Config.GRID.width);
-			}while(!this.level.tileIsPassable(endX, endY));
+			endX = this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x;
+			
+			var i = 1;
+			while(!this.level.tileIsPassable(endX, endY) && i < lpc.Config.GRID.width/2){
+				if(this.level.tileIsPassable(endX + i, endY)){
+					endX += i;
+					break;
+				}else if(this.level.tileIsPassable(endX - i, endY)){
+					endX -= i;
+					break;
+				}
+				
+				i++;
+			}
 		}
 		break;
 		
 		case 'right':
-		if( this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y > this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y - 3 &&
-			this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y < this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y + 3 &&
+		if( this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y > this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y - 2 &&
+			this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y < this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y + 2 &&
 			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) > 0 &&
-			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) < 3){
+			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) < 4){
 			
 			endX = lpc.Config.GRID.width - 1;
-			do{
-				endY = goog.math.randomInt(lpc.Config.GRID.height);
-			}while(!this.level.tileIsPassable(endX, endY));
+			endY = this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y;
+			
+			var i = 1;
+			while(!this.level.tileIsPassable(endX, endY) && i < lpc.Config.GRID.height/2){
+				if(this.level.tileIsPassable(endX, endY + i)){
+					endY += i;
+					break;
+				}else if(this.level.tileIsPassable(endX, endY - i)){
+					endY -= i;
+					break;
+				}
+				
+				i++;
+			}
 		}
 		break;
 		
 		case 'left':
-		if( this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y > this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y - 3 &&
-			this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y < this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y + 3 &&
+		if( this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y > this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y - 2 &&
+			this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y < this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y + 2 &&
 			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) < 0 &&
-			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) > -3){
+			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) > -4){
 			
 			endX = 0;
-			do{
-				endY = goog.math.randomInt(lpc.Config.GRID.height);
-			}while(!this.level.tileIsPassable(endX, endY));
+			endY = this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y;
+			
+			var i = 1;
+			while(!this.level.tileIsPassable(endX, endY) && i < lpc.Config.GRID.height/2){
+				if(this.level.tileIsPassable(endX, endY + i)){
+					endY += i;
+					break;
+				}else if(this.level.tileIsPassable(endX, endY - i)){
+					endY -= i;
+					break;
+				}
+				
+				i++;
+			}
 		}
 		break;
 	}

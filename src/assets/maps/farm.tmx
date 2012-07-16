@@ -205,6 +205,11 @@
     <property name="pass" value="false"/>
    </properties>
   </tile>
+  <tile id="30">
+   <properties>
+    <property name="pass" value="false"/>
+   </properties>
+  </tile>
   <tile id="31">
    <properties>
     <property name="pass" value="false"/>

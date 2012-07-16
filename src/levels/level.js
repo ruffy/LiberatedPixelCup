@@ -130,7 +130,12 @@ lpc.levels.Level.prototype.tileIsPassable = function(value, opt_y){
         y = Math.round(value.y);
     }
    	
-    var pass = this.tilesArray[y][x] == 0;
+   	var pass = false;
+   	
+   	if(typeof this.tilesArray[y] != 'undefined'){
+   		pass = this.tilesArray[y][x] == 0;
+   	}
+    
     
     return pass != false; //se for false retorna false, se for qualquer outra coisa retorna true;
 }

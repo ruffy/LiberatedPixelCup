@@ -194,7 +194,7 @@ lpc.start = function(){
 	   		var lt = new goog.math.Coordinate(Math.floor(cornerLT.x), Math.floor(cornerLT.y - (1/lpc.Config.GRID_CELL)));
 	   		var rt = new goog.math.Coordinate(Math.floor(cornerRT.x), Math.floor(cornerRT.y - (1/lpc.Config.GRID_CELL)));
 	   		
-            if(level.tileIsPassable(lt) && level.tileIsPassable(rt) && lt.y + 1 > 0)
+            if(level.tileIsPassable(lt) && level.tileIsPassable(rt) && lt.y > 0)
             	move = new goog.math.Coordinate(0, -1);
             else
             	player.setPosition(cornerLT.x * lpc.Config.GRID_CELL - player.hitArea.getPosition().x, Math.round(cornerLT.y) * lpc.Config.GRID_CELL - player.hitArea.getPosition().y);

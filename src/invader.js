@@ -96,42 +96,6 @@ lpc.Invader.prototype.findPath = function(){
 		endX = Math.floor((this.player.getPosition().x + this.player.hitArea.getPosition().x) / lpc.Config.GRID_CELL),
 		endY = Math.floor((this.player.getPosition().y + this.player.hitArea.getPosition().y) / lpc.Config.GRID_CELL);
 	
-	/*if( this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x > this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x - 5 &&
-		this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x < this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x + 5 &&
-		this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y > this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y - 5 &&
-		this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y < this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y + 5 ){
-			
-		if( this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x > this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x &&
-			this.player.getDirection() == 'left'){
-			
-			endX = 0;
-			do{
-				endY = goog.math.randomInt(lpc.Config.GRID.height);
-			}while(!this.level.tileIsPassable(endX, endY));
-		}else if(	this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x < this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x &&
-					this.player.getDirection() == 'right'){
-			
-			endX = lpc.Config.GRID.width - 1;
-			do{
-				endY = goog.math.randomInt(lpc.Config.GRID.height);
-			}while(!this.level.tileIsPassable(endX, endY));
-		}else if(	this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y > this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y &&
-					this.player.getDirection() == 'up'){
-		
-			endY = 0;
-			do{
-				endX = goog.math.randomInt(lpc.Config.GRID.width);
-			}while(!this.level.tileIsPassable(endX, endY));
-		}else if(	this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y < this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y &&
-					this.player.getDirection() == 'down'){
-			
-			endY = lpc.Config.GRID.height - 1;
-			do{
-				endX = goog.math.randomInt(lpc.Config.GRID.width);
-			}while(!this.level.tileIsPassable(endX, endY));
-		}
-	}*/
-	
 	switch(this.player.getDirection()){
 		case 'up':
 		if( this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x > this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x - 3 &&
@@ -140,9 +104,20 @@ lpc.Invader.prototype.findPath = function(){
 			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) > -3){
 			
 			endY = 0;
-			do{
-				endX = goog.math.randomInt(lpc.Config.GRID.width);
-			}while(!this.level.tileIsPassable(endX, endY));
+			endX = this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x;
+			
+			var i = 1;
+			while(!this.level.tileIsPassable(endX, endY) && i < lpc.Config.GRID.width){
+				if(this.level.tileIsPassable(endX + i, endY)){
+					endX += i;
+					break;
+				}else if(this.level.tileIsPassable(endX - i, endY)){
+					endX -= i;
+					break;
+				}
+				
+				i++;
+			}
 		}
 		break;
 		

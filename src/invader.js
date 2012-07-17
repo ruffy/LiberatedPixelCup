@@ -103,6 +103,8 @@ lpc.Invader.prototype.findPath = function(){
 			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) < 0 &&
 			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) > -4){
 			
+			this.dispatchEvent('score');
+			
 			endY = 0;
 			endX = this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x;
 			
@@ -126,6 +128,8 @@ lpc.Invader.prototype.findPath = function(){
 			this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x < this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x + 2 &&
 			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) > 0 &&
 			(this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y) - (this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y) < 4){
+			
+			this.dispatchEvent('score');
 			
 			endY = lpc.Config.GRID.height - 1;
 			endX = this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x;
@@ -151,6 +155,8 @@ lpc.Invader.prototype.findPath = function(){
 			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) > 0 &&
 			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) < 4){
 			
+			this.dispatchEvent('score');
+			
 			endX = lpc.Config.GRID.width - 1;
 			endY = this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y;
 			
@@ -174,6 +180,8 @@ lpc.Invader.prototype.findPath = function(){
 			this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y < this.player.getPositionOnGrid().y + this.player.hitArea.getPositionOnGrid().y + 2 &&
 			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) < 0 &&
 			(this.getPositionOnGrid().x + this.hitArea.getPositionOnGrid().x) - (this.player.getPositionOnGrid().x + this.player.hitArea.getPositionOnGrid().x) > -4){
+			
+			this.dispatchEvent('score');
 			
 			endX = 0;
 			endY = this.getPositionOnGrid().y + this.hitArea.getPositionOnGrid().y;

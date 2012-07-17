@@ -3,6 +3,7 @@ goog.provide('lpc.InvadersControl');
 goog.require('goog.math');
 goog.require('goog.math.Coordinate');
 goog.require('lpc.Invader');
+goog.require('lpc.Node');
 goog.require('lime.scheduleManager');
 goog.require('lime.animation.MoveBy');
 goog.require('lime.animation.KeyframeAnimation');
@@ -10,6 +11,8 @@ goog.require('lime.parser.JSON');
 goog.require('lime.ASSETS.ghost.json');
 
 lpc.InvadersControl = function(level, player){
+	goog.base(this);
+	
 	var maxQuantity 	= 1,
 		invaderSpeed	= 10,
 		invaders		= new Array(),
@@ -67,5 +70,12 @@ lpc.InvadersControl = function(level, player){
 		var invader = new lpc.Invader(level, player);
 		invader.setPositionOnGrid(position).turn(direction).findPath();
 		level.getCharLayer().appendChild(invader);
+		
+		goog.events.listen(invader, 'score', function(){
+			self.dispatchEvent('score');
+			//console.log('score');
+		});
 	}
 }
+
+goog.inherits(lpc.InvadersControl, lpc.Node);

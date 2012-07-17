@@ -176,6 +176,9 @@ lpc.start = function(){
 		});
 		
 		var invadersControl = new lpc.InvadersControl(level, player);
+		goog.events.listen(invadersControl, 'score', function(){
+			
+		});
 	}
 	
 	

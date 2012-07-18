@@ -1,7 +1,5 @@
 goog.provide('lpc');
 
-
-//get requirements
 goog.require('lpc.Config');
 goog.require('lime.Director');
 goog.require('lpc.Player');
@@ -19,6 +17,7 @@ goog.require('lpc.Layer');
 goog.require('lime.parser.TMX');
 goog.require('lpc.levels.Level');
 goog.require('lpc.Fog');
+goog.require('lpc.GameOver');
 goog.require('lpc.InvadersControl');
 goog.require('lime.animation.FadeTo');
 
@@ -185,6 +184,10 @@ lpc.start = function(){
 		goog.events.listen(invadersControl, 'score', function(){
 			score++;
 			scoreLabel.setText(''+goog.string.padNumber(score,4));
+		});
+		
+		goog.events.listen(invadersControl, 'gameover', function(){
+			director.replaceScene(new lpc.GameOver(score));
 		});
 	}
 	

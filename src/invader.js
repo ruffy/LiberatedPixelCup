@@ -386,11 +386,17 @@ lpc.Invader.prototype.walk = function(step){
 			this.setPosition(this.getPosition().x + x, this.getPosition().y + y);
 		}else{
 			lime.scheduleManager.unschedule(doWalk, self);
-			//self.stop(direction);
 			this.level.tilesArray[positionOnGrid.y][positionOnGrid.x] = 0;
 			this.level.tilesArrayModified[positionOnGrid.y][positionOnGrid.x] = 0;
 			
-			this.findPath();
+			if( this.getPositionOnGrid().x == this.player.getPositionOnGrid().x &&
+				this.getPositionOnGrid().y == this.player.getPositionOnGrid().y ){
+				
+				this.dispatchEvent('gameover');
+			}else{
+				this.findPath();
+			}
+			
 			
 			//this.walkPath();
 		}

@@ -73,7 +73,10 @@ lpc.InvadersControl = function(level, player){
 		
 		goog.events.listen(invader, 'score', function(){
 			self.dispatchEvent('score');
-			//console.log('score');
+		});
+		
+		goog.events.listen(invader, 'gameover', function(){
+			self.dispatchEvent('gameover');
 		});
 	}
 }

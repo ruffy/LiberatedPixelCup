@@ -29,7 +29,8 @@ lpc.start = function(){
 		levelAnimating = false,
 		moveDelay = .25;
 		moveDirection = '',
-		charDirection = '';
+		charDirection = '',
+		score = 0;
 	
 	var level = new lpc.levels.Level(game, 'assets/maps/farm.tmx');
 	var input = new lpc.inputs.KeyboardInput();
@@ -53,7 +54,7 @@ lpc.start = function(){
 	function intro(){
 		var introText = new lpc.Sprite().setPosition(lpc.Config.SCREEN.width/2, lpc.Config.SCREEN.height/2);
 		
-		var label1 = new lime.Label().setText('In a cold winter night,').setFontFamily('monospace').setFontColor('#eeeeee').setFontSize(20)
+		var label1 = new lime.Label().setText('In a cold winter night,').setFontFamily('monospace').setFontColor('#eeeeee').setFontSize(20);
 		label1.setPosition(0, 0).setOpacity(0);
 		
 		var label2 = new lime.Label().setText('there\'s something odd out there in the fog.').setFontFamily('monospace').setFontColor('#eeeeee').setFontSize(20)
@@ -176,8 +177,14 @@ lpc.start = function(){
 		});
 		
 		var invadersControl = new lpc.InvadersControl(level, player);
+		
+		var scoreLabel = new lime.Label().setText(''+goog.string.padNumber(score,4)).setFontFamily('monospace').setFontColor('#eeeeee').setFontSize(16)
+						.setPosition(lpc.Config.SCREEN.width - 64, 32).setAlign('right').setFontWeight('bold');
+		game.appendChild(scoreLabel);
+		
 		goog.events.listen(invadersControl, 'score', function(){
-			
+			score++;
+			scoreLabel.setText(''+goog.string.padNumber(score,4));
 		});
 	}
 	

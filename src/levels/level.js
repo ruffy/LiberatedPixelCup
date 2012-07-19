@@ -7,7 +7,6 @@ lpc.levels.Level = function(game, tmx){
 	this.layers_ = new Array();
 	this.charLayer_;
 	this.tilesArray = new Array();
-	this.tilesArrayModified = new Array();
 	
 	var grid_visible = false;
 	var grid = new lpc.Sprite();
@@ -47,10 +46,8 @@ lpc.levels.Level = function(game, tmx){
 			
 			if(typeof this.tilesArray[y] == 'undefined' || this.tilesArray[y] == null){
 				this.tilesArray[y] = new Array();
-				this.tilesArrayModified[y] = new Array();
 			}
 			this.tilesArray[y][x] = pass ? 0 : 1;
-			this.tilesArrayModified[y][x] = pass ? 0 : 1;
 			
 			layer.appendChild(tile);
 		}
@@ -83,6 +80,30 @@ lpc.levels.Level = function(game, tmx){
 		this.removeChild(grid);
 		grid_visible = false;
 	}
+	
+	lime.scheduleManager.schedule(function(){
+		var aux = [];
+		
+		for(var i = 0, ii = this.charLayer_.getNumberOfChildren()-1; i <= ii; i++, ii--){
+			aux[i] = this.charLayer_.getChildAt(i);
+			aux[ii] = this.charLayer_.getChildAt(ii);
+		}
+		
+		aux.sort(function(a, b){
+			if(a.getPosition().y < b.getPosition().y){
+				return -1;
+			}else if(a.getPosition().y == b.getPosition().y){
+				return 0;
+			}else{
+				return 1;
+			}
+		});
+		
+		for(var i = 0, ii = aux.length-1; i <= ii; i++, ii--){
+			this.charLayer_.setChildIndex(aux[i], i);
+			this.charLayer_.setChildIndex(aux[ii], ii);
+		}
+	}, this);
 }
 
 lpc.levels.Level.prototype.getLayers = function(){

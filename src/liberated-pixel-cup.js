@@ -182,7 +182,7 @@ lpc.start = function(){
 		game.appendChild(scoreLabel);
 		
 		goog.events.listen(invadersControl, 'score', function(){
-			score++;
+			score += 5;
 			scoreLabel.setText(''+goog.string.padNumber(score,4));
 		});
 		

@@ -336,7 +336,6 @@ lpc.Invader.prototype.walk = function(step){
 	position.y = Math.round(step[1]) * lpc.Config.GRID_CELL;
 	
 	this.level.tilesArray[step[1]][step[0]] = 1;
-	this.level.tilesArrayModified[step[1]][step[0]] = 1;
 	
 	this.move(direction);
 	
@@ -387,10 +386,11 @@ lpc.Invader.prototype.walk = function(step){
 		}else{
 			lime.scheduleManager.unschedule(doWalk, self);
 			this.level.tilesArray[positionOnGrid.y][positionOnGrid.x] = 0;
-			this.level.tilesArrayModified[positionOnGrid.y][positionOnGrid.x] = 0;
 			
-			if( this.getPositionOnGrid().x == this.player.getPositionOnGrid().x &&
-				this.getPositionOnGrid().y == this.player.getPositionOnGrid().y ){
+			if( this.getPositionOnGrid().x >= this.player.getPositionOnGrid().x &&
+				this.getPositionOnGrid().y >= this.player.getPositionOnGrid().y &&
+				this.getPositionOnGrid().x <= this.player.getPositionOnGrid().x + 1 &&
+				this.getPositionOnGrid().y <= this.player.getPositionOnGrid().y + 1){
 				
 				this.dispatchEvent('gameover');
 			}else{

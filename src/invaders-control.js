@@ -13,8 +13,9 @@ goog.require('lime.ASSETS.ghost.json');
 lpc.InvadersControl = function(level, player){
 	goog.base(this);
 	
-	var maxQuantity 	= 1,
-		invaderSpeed	= 10,
+	this.quantity = 0;
+	
+	var	invaderSpeed	= 10,
 		invaders		= new Array(),
 		invadersTiles	= new Array(),
 		interval		= 10000;
@@ -24,7 +25,6 @@ lpc.InvadersControl = function(level, player){
 	manager();
 	
 	function manager(){
-		maxQuantity++;
 		if(interval >= 600){
 			interval -= 100;
 		}
@@ -78,6 +78,8 @@ lpc.InvadersControl = function(level, player){
 		goog.events.listen(invader, 'gameover', function(){
 			self.dispatchEvent('gameover');
 		});
+		
+		self.quantity += 1;
 	}
 }
 

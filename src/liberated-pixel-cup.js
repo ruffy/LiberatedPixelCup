@@ -24,12 +24,10 @@ goog.require('lime.animation.FadeTo');
 lpc.start = function(){
 	var director = new lime.Director(document.getElementById('game'), lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
 	    game = new lime.Scene(),
-		player = new lpc.Player().setPositionOnGrid((lpc.Config.GRID.width-1)/2 -1, (lpc.Config.GRID.height-1)/2 -3).setOpacity(0),
-		levelAnimating = false,
-		moveDelay = .25;
-		moveDirection = '',
-		charDirection = '',
-		score = 0;
+		player = new lpc.Player(),
+		levelAnimating,
+		moveDirection,
+		score;
 	
 	var level = new lpc.levels.Level(game, 'assets/maps/farm.tmx');
 	var input = new lpc.inputs.KeyboardInput();
@@ -153,6 +151,12 @@ lpc.start = function(){
 	}
 	
 	function startGame(){
+		levelAnimating = false;
+		moveDirection = '';
+		score = 0;
+		
+		player.setPositionOnGrid((lpc.Config.GRID.width-1)/2 -1, (lpc.Config.GRID.height-1)/2 -3).setOpacity(0)
+		
 		player.runAction(new lime.animation.FadeTo(1).setDuration(.2));
 		
 		goog.events.listen(input, lpc.events.InputEvent.FIRE, function(e){

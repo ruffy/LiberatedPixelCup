@@ -17,6 +17,7 @@ lpc.Invader = function(level, player){
 	var delay = .08;
 	var self = this;
 	this.speedFactor = 120;
+	this.active = true;
 	
 	this.sheet = new lime.SpriteSheet('assets/spritesheets/skeleton.png', lime.ASSETS.skeleton.json, lime.parser.JSON);
 	
@@ -211,6 +212,15 @@ lpc.Invader.prototype.findPath = function(){
 	return this;
 }
 
+lpc.Invader.prototype.destroy = function(){
+	this.path = [];
+	this.active = false;
+	this.stop('up');
+	this.level.tilesArray[this.getPositionOnGrid().y][this.getPositionOnGrid().x] = 0;
+	
+	return this;
+}
+
 lpc.Invader.prototype.move = function(direction){
 	if(this.getDirection() != direction){
 		this.setDirection(direction);
@@ -292,11 +302,20 @@ lpc.Invader.prototype.turn = function(side){
 }
 
 lpc.Invader.prototype.walkPath = function(){
-	if(this.path.length > 0){
-		var step = this.path.shift();
-		
-		if(	this.level.tileIsPassable(step[0], step[1])){
-			this.walk(step);
+	if(this.active){
+		if(this.path.length > 0){
+			var step = this.path.shift();
+			
+			if(	this.level.tileIsPassable(step[0], step[1])){
+				this.walk(step);
+			}else{
+				this.stop(this.getDirection());
+				
+				lime.scheduleManager.callAfter(function(){
+					this.findPath();
+				}, this, 500);
+			}
+			
 		}else{
 			this.stop(this.getDirection());
 			
@@ -304,13 +323,6 @@ lpc.Invader.prototype.walkPath = function(){
 				this.findPath();
 			}, this, 500);
 		}
-		
-	}else{
-		this.stop(this.getDirection());
-		
-		lime.scheduleManager.callAfter(function(){
-			this.findPath();
-		}, this, 500);
 	}
 	
 	return this;

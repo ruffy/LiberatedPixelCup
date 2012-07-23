@@ -9,11 +9,17 @@ lpc.Game = function(){
 	
 	var self = this;
 	
-	var player = new lpc.Player(),
+	function init(){
+		
+	}
+	
+	var player = new lpc.Player().setOpacity(0),
 		input = new lpc.inputs.KeyboardInput(),
 		moveDirection,
 		score,
 		level;
+		
+	var invadersControl;
 	
 	level = new lpc.levels.Level(this, 'assets/maps/farm.tmx');
 	
@@ -22,15 +28,20 @@ lpc.Game = function(){
 	this.appendChild(fog);
 	this.appendChild(night);
 	
+	var scoreLabel = new lime.Label().setText(''+goog.string.padNumber(score,4)).setFontFamily('monospace').setFontColor('#eeeeee').setFontSize(16)
+						.setPosition(lpc.Config.SCREEN.width - 64, 32).setAlign('right').setFontWeight('bold');
+	this.appendChild(scoreLabel);
+	
 	this.startGame = function(){
-		level.getCharLayer().removeAllChildren().appendChild(player);
+		level.getCharLayer().appendChild(player);
 		
 		moveDirection = '';
 		score = 0;
 		
-		player.setPositionOnGrid((lpc.Config.GRID.width-1)/2 -1, (lpc.Config.GRID.height-1)/2 -3).setOpacity(0)
+		player.setPositionOnGrid((lpc.Config.GRID.width-1)/2 -1, (lpc.Config.GRID.height-1)/2 -3).turn('down');
 		
-		player.runAction(new lime.animation.FadeTo(1).setDuration(.2));
+		if(player.getOpacity() == 0)
+			player.runAction(new lime.animation.FadeTo(1).setDuration(.2));
 		
 		goog.events.listen(input, lpc.events.InputEvent.FIRE, function(e){
 			moveDirection = e.input;
@@ -52,11 +63,9 @@ lpc.Game = function(){
 			}
 		});
 		
-		var invadersControl = new lpc.InvadersControl(level, player);
+		invadersControl = new lpc.InvadersControl(level, player);
 		
-		var scoreLabel = new lime.Label().setText(''+goog.string.padNumber(score,4)).setFontFamily('monospace').setFontColor('#eeeeee').setFontSize(16)
-						.setPosition(lpc.Config.SCREEN.width - 64, 32).setAlign('right').setFontWeight('bold');
-		this.appendChild(scoreLabel);
+		scoreLabel.setText(''+goog.string.padNumber(score,4)); 
 		
 		goog.events.listen(invadersControl, 'score', function(){
 			score += 5;
@@ -66,6 +75,8 @@ lpc.Game = function(){
 		goog.events.listen(invadersControl, 'gameover', function(){
 			self.dispatchEvent('gameover');
 		});
+		
+		return this;
 	}
 	
 	this.getScore = function(){return score}
@@ -130,6 +141,10 @@ lpc.Game = function(){
     }
 	
 	this.startGame();
+	
+	this.destroy = function(){
+		invadersControl.destroy();
+	}
 }
 
 goog.inherits(lpc.Game, lime.Scene);

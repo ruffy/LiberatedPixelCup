@@ -32,11 +32,18 @@ lpc.start = function(){
 	director.replaceScene(game);
 	
 	goog.events.listen(game, 'gameover', function(){
+		game.destroy();
 		director.replaceScene(gameover.setScore(game.getScore()));
 	});
 	
 	goog.events.listen(gameover, 'restart', function(){
-		director.replaceScene(game.startGame());
+		game.destroy();
+		
+		if(director.getCurrentScene() != game){
+			director.replaceScene(game.startGame());
+		}else{
+			game.startGame()
+		}
 	});
 }
 

@@ -25,13 +25,18 @@ goog.require('lpc.Game');
 lpc.start = function(){
 	var director = new lime.Director(document.getElementById('game'), lpc.Config.SCREEN.width, lpc.Config.SCREEN.height),
 	    game = new lpc.Game();
+	    gameover = new lpc.GameOver();
 	
 	director.makeMobileWebAppCapable();
 	
 	director.replaceScene(game);
 	
 	goog.events.listen(game, 'gameover', function(){
-		director.replaceScene(new lpc.GameOver(game.getScore()));
+		director.replaceScene(gameover.setScore(game.getScore()));
+	});
+	
+	goog.events.listen(gameover, 'restart', function(){
+		director.replaceScene(game.startGame());
 	});
 }
 

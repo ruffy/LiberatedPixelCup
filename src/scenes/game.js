@@ -3,6 +3,7 @@ goog.provide('lpc.Game');
 goog.require('lime.Scene');
 goog.require('lpc.Sprite');
 goog.require('lpc.Fog');
+goog.require('lpc.Intro');
 
 lpc.Game = function(){
 	goog.base(this);
@@ -28,12 +29,13 @@ lpc.Game = function(){
 	this.appendChild(fog);
 	this.appendChild(night);
 	
-	var scoreLabel = new lime.Label().setText(''+goog.string.padNumber(score,4)).setFontFamily('monospace').setFontColor('#eeeeee').setFontSize(16)
+	var scoreLabel = new lime.Label().setText('').setFontFamily('monospace').setFontColor('#eeeeee').setFontSize(16)
 						.setPosition(lpc.Config.SCREEN.width - 64, 32).setAlign('right').setFontWeight('bold');
 	this.appendChild(scoreLabel);
 	
 	this.startGame = function(){
 		level.getCharLayer().appendChild(player);
+		scoreLabel.setText(''+goog.string.padNumber(score,4));
 		
 		moveDirection = '';
 		score = 0;
@@ -140,11 +142,17 @@ lpc.Game = function(){
 	   	player.move(moveDirection);
     }
 	
-	this.startGame();
-	
 	this.destroy = function(){
 		invadersControl.destroy();
 	}
+	
+	var intro = new lpc.Intro();
+	goog.events.listen(intro, 'finish', function(){
+		self.removeChild(intro);
+		self.startGame();
+	});
+	self.appendChild(intro);
+	intro.start();
 }
 
 goog.inherits(lpc.Game, lime.Scene);

@@ -14,7 +14,6 @@ goog.require('lpc.events.InputEvent');
 goog.require('lpc.Node');
 goog.require('lpc.Sprite');
 goog.require('lpc.Layer');
-goog.require('lime.parser.TMX');
 goog.require('lpc.levels.Level');
 goog.require('lpc.Fog');
 goog.require('lpc.GameOver');
@@ -37,12 +36,11 @@ lpc.start = function(){
 	});
 	
 	goog.events.listen(gameover, 'restart', function(){
-		game.destroy();
-		
 		if(director.getCurrentScene() != game){
+			game.destroy();
 			director.replaceScene(game.startGame());
 		}else{
-			game.startGame()
+			//game.startGame()
 		}
 	});
 }

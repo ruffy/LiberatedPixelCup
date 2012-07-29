@@ -66,11 +66,12 @@ lpc.Intro = function(){
 								
 								lime.scheduleManager.callAfter(function(){
 									fadeIn.removeTarget(label2);
-									fadeIn.removeTarget(arrow);
 									
 									label1.setText('Be carefull...');
+									arrow.setPosition(label1.getPosition().x + label1.getSize().width/2, label1.getPosition().y);
 									
 									label1.runAction(fadeIn);
+									arrow.runAction(fadeIn);
 									
 									goog.events.listen(document, ['keydown'], finishIntro);
 									
@@ -79,9 +80,9 @@ lpc.Intro = function(){
 											goog.events.unlisten(document, ['keydown'], finishIntro);
 											
 											fadeOut.removeTarget(label2);
-											fadeOut.removeTarget(arrow);
 											
 											label1.runAction(fadeOut);
+											arrow.runAction(fadeOut);
 											
 											goog.events.listen(fadeOut, [lime.animation.Event.STOP], function(){
 												self.removeChild(label1);

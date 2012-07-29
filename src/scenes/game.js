@@ -25,7 +25,7 @@ lpc.Game = function(){
 	level = new lpc.levels.Level(this, 'assets/maps/farm.tmx');
 	
 	var fog = new lpc.Fog().setQuality(.3)
-	var night = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(0, 0).setFill('#0F0F2D').setOpacity(.45);
+	var night = new lpc.Sprite().setSizeOnGrid(lpc.Config.GRID).setPositionOnGrid(0, 0).setFill('#0F0F2D').setOpacity(.40);
 	this.appendChild(fog);
 	this.appendChild(night);
 	

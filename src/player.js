@@ -115,6 +115,8 @@ lpc.Player.prototype.move = function(direction){
 			break;
 		}
 	}
+	
+	return this;
 }
 
 lpc.Player.prototype.stop = function(){

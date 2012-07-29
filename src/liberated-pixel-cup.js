@@ -38,9 +38,8 @@ lpc.start = function(){
 	goog.events.listen(gameover, 'restart', function(){
 		if(director.getCurrentScene() != game){
 			game.destroy();
-			director.replaceScene(game.startGame());
-		}else{
-			//game.startGame()
+			director.replaceScene(game);
+			game.startGame();
 		}
 	});
 }
